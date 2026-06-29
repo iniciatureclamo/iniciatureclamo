@@ -240,13 +240,12 @@
       </div>
 
       <div class="field">
-        <label for="monto">Monto por el cual originó el reclamo *</label>
+        <label for="monto">¿Cuál es el monto en disputa? *</label>
         <div class="monto-wrap">
           <span class="monto-prefix">$</span>
           <input type="text" id="monto" placeholder="Ej: 300000" inputmode="numeric">
         </div>
         <div class="field-err" id="err-monto">Ingresá un monto válido (solo números)</div>
-        <div class="field-err" id="err-monto-min" style="display:none;">El monto mínimo para gestionar tu reclamo es de $300.000</div>
       </div>
 
       <div class="field">
@@ -389,22 +388,13 @@
     const solucion    = document.getElementById('solucion').value;
     const descripcion = document.getElementById('descripcion').value.trim();
 
-    const montoNum  = parseInt(monto, 10);
-    const montoInv  = !/^\d+$/.test(monto);
-    const montoMin  = !montoInv && montoNum <= 100000;
+    const montoInv = !/^\d+$/.test(monto);
 
-    setErr('empresa',     empresa.length < 2,         'err-empresa');
-    setErr('motivo',      !motivo,                    'err-motivo');
-    setErr('monto',       montoInv,                   'err-monto');
-    setErr('solucion',    !solucion,                  'err-solucion');
-    setErr('descripcion', descripcion.length < 20,    'err-descripcion');
-
-    // Monto mínimo: mostrar error específico
-    document.getElementById('err-monto-min').style.display = montoMin ? 'block' : 'none';
-    if (montoMin) {
-      document.getElementById('monto').classList.add('has-error');
-      return;
-    }
+    setErr('empresa',     empresa.length < 2,      'err-empresa');
+    setErr('motivo',      !motivo,                 'err-motivo');
+    setErr('monto',       montoInv,                'err-monto');
+    setErr('solucion',    !solucion,               'err-solucion');
+    setErr('descripcion', descripcion.length < 20, 'err-descripcion');
 
     if (!valid('empresa') || !valid('motivo') || montoInv || !valid('solucion') || !valid('descripcion')) return;
 
