@@ -240,7 +240,7 @@
       </div>
 
       <div class="field">
-        <label for="monto">¿Cuál es el monto en disputa? *</label>
+        <label for="monto">¿Por qué monto te afectó esta empresa? *</label>
         <div class="monto-wrap">
           <span class="monto-prefix">$</span>
           <input type="text" id="monto" placeholder="Ej: 300000" inputmode="numeric">
@@ -350,7 +350,7 @@
         <div class="res-row"><span class="rl">Empresa</span><span class="rv" id="resEmpresa">—</span></div>
         <div class="res-row"><span class="rl">Motivo</span><span class="rv" id="resMotivo">—</span></div>
         <div class="res-row"><span class="rl">Monto reclamado</span><span class="rv" id="resMonto">—</span></div>
-        <div class="res-row"><span class="rl">Recupero potencial</span><span class="rv" id="resRecupero" style="color:var(--green);font-weight:800;">—</span></div>
+        <div class="res-row"><span class="rl">💰 Podés obtener hasta</span><span class="rv" id="resRecupero" style="color:var(--green);font-weight:800;">—</span></div>
       </div>
 
       <div class="cta-msg">¿Listo para iniciar la gestión?</div>
@@ -461,9 +461,9 @@
     document.getElementById('resultSub').textContent =
       `Analizamos tu caso contra ${datos.empresa} y tenemos muy buenas noticias.`;
 
-    const montoNum    = parseInt(datos.monto, 10);
-    const recupero    = montoNum * 5;
-    const fmt         = n => '$' + n.toLocaleString('es-AR');
+    const montoNum = parseInt(datos.monto, 10);
+    const recupero = Math.max(montoNum * 5, 300000);
+    const fmt      = n => '$' + n.toLocaleString('es-AR');
 
     document.getElementById('resEmpresa').textContent  = datos.empresa;
     document.getElementById('resMotivo').textContent   = datos.motivo;
