@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciá tu Reclamo — Reclamo Legal Argentina</title>
+  <style>
+    :root {
+      --primary:       #7B1A1A;
+      --primary-light: #A52929;
+      --accent:        #DC2626;
+      --accent-light:  #FEE2E2;
+      --green:         #16A34A;
+      --green-light:   #DCFCE7;
+      --gold:          #D97706;
+      --gold-light:    #FEF3C7;
+      --text:          #111827;
+      --muted:         #6B7280;
+      --border:        #E5E7EB;
+      --bg:            #F9F5F5;
+      --white:         #FFFFFF;
+      --wa:            #25D366;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--white);
+      border-radius: 20px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.13);
+      width: 100%;
+      max-width: 460px;
+      overflow: hidden;
+    }
+    .card-header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      padding: 26px 24px 20px;
+      text-align: center;
+      color: var(--white);
+    }
+    .brand-logo  { font-size: 26px; margin-bottom: 4px; }
+    .brand-name  { font-size: 19px; font-weight: 800; letter-spacing: -0.3px; }
+    .brand-tag   { font-size: 11px; opacity: 0.75; margin-top: 3px; text-transform: uppercase; letter-spacing: 0.9px; }
+
+    /* ── PROGRESS ── */
+    .progress-wrap { background: #F0E8E8; height: 5px; }
+    .progress-bar  { height: 100%; background: var(--wa); transition: width 0.45s ease; }
+
+    .step-label {
+      display: flex; align-items: center; gap: 8px;
+      padding: 11px 20px; border-bottom: 1px solid var(--border);
+      font-size: 12.5px; color: var(--muted); transition: opacity 0.2s;
+    }
+    .step-num {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--primary); color: var(--white);
+      font-size: 11px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+
+    .card-body { padding: 28px 24px 24px; }
+    .step-title { font-size: 19px; font-weight: 700; color: var(--text); margin-bottom: 5px; }
+    .step-desc  { font-size: 13.5px; color: var(--muted); line-height: 1.55; margin-bottom: 22px; }
+
+    /* ── FORM ── */
+    .field { margin-bottom: 16px; }
+    label  { display: block; font-size: 12.5px; font-weight: 600; color: var(--text); margin-bottom: 5px; }
+    input, select, textarea {
+      width: 100%; padding: 12px 14px; border: 1.5px solid var(--border);
+      border-radius: 10px; font-size: 15px; color: var(--text);
+      outline: none; transition: border-color .2s, box-shadow .2s;
+      background: var(--white); font-family: inherit;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(123,26,26,.08);
+    }
+    input.has-error, select.has-error, textarea.has-error { border-color: var(--accent); }
+    textarea { resize: none; }
+    .field-err { font-size: 11.5px; color: var(--accent); margin-top: 4px; display: none; }
+
+    /* ── MONTO ── */
+    .monto-wrap { position: relative; }
+    .monto-prefix {
+      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+      font-size: 15px; color: var(--muted); pointer-events: none; font-weight: 600;
+    }
+    .monto-wrap input { padding-left: 28px; }
+
+    /* ── BUTTONS ── */
+    .btn {
+      width: 100%; padding: 14px; border: none; border-radius: 10px;
+      font-size: 15.5px; font-weight: 700; cursor: pointer;
+      transition: opacity .2s, transform .1s; margin-top: 4px;
+    }
+    .btn:active { transform: scale(.985); }
+    .btn-primary { background: var(--primary); color: var(--white); }
+    .btn-primary:hover { opacity: .88; }
+    .btn-ghost  { background: var(--bg); color: var(--muted); font-weight: 600; margin-top: 8px; }
+    .btn-ghost:hover { background: var(--border); }
+    .btn-wa {
+      background: var(--wa); color: var(--white);
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      font-size: 16px; text-decoration: none; border-radius: 10px;
+      padding: 15px; font-weight: 700; transition: opacity .2s;
+      border: none; cursor: pointer; width: 100%;
+    }
+    .btn-wa:hover { opacity: .9; }
+    .disclaimer { font-size: 11px; color: var(--muted); text-align: center; margin-top: 14px; line-height: 1.5; }
+
+    /* ── LOADING ── */
+    #stepLoading .card-body { padding: 44px 24px; text-align: center; }
+    .spinner {
+      width: 64px; height: 64px; border: 5px solid #F0E8E8;
+      border-top-color: var(--primary); border-radius: 50%;
+      animation: spin .9s linear infinite; margin: 0 auto 20px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 18px; }
+    .loading-steps { display: flex; flex-direction: column; gap: 9px; text-align: left; }
+    .ls { font-size: 13px; color: var(--muted); opacity: 0; transition: opacity .4s; display: flex; align-items: center; gap: 7px; }
+    .ls.show { opacity: 1; }
+    .ls.done { color: var(--green); }
+    .ls .ic  { width: 16px; flex-shrink: 0; }
+
+    /* ── RESULTADO ── */
+    #stepResult .card-body { padding: 30px 24px 28px; text-align: center; }
+    .result-icon {
+      width: 86px; height: 86px; border-radius: 50%;
+      background: var(--green-light); border: 4px solid #86EFAC;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 38px; margin: 0 auto 18px;
+    }
+    .result-title {
+      font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 8px;
+    }
+    .result-sub {
+      font-size: 13.5px; color: var(--muted); line-height: 1.6; margin-bottom: 20px;
+    }
+
+    /* ── STAT BOXES ── */
+    .stat-row { display: flex; gap: 10px; margin-bottom: 18px; }
+    .stat-box {
+      flex: 1; border-radius: 12px; padding: 14px 12px; text-align: center;
+    }
+    .stat-box.green { background: var(--green-light); border: 1.5px solid #86EFAC; }
+    .stat-box.gold  { background: var(--gold-light);  border: 1.5px solid #FCD34D; }
+    .stat-num  { font-size: 26px; font-weight: 900; line-height: 1; }
+    .stat-box.green .stat-num { color: var(--green); }
+    .stat-box.gold  .stat-num { color: var(--gold); }
+    .stat-label { font-size: 11px; font-weight: 600; color: var(--muted); margin-top: 4px; line-height: 1.35; text-transform: uppercase; letter-spacing: .3px; }
+
+    /* ── RESUMEN RECLAMO ── */
+    .resumen-box {
+      background: #F9F5F5; border: 1.5px solid #E8D5D5;
+      border-radius: 12px; padding: 14px 16px; margin-bottom: 18px; text-align: left;
+    }
+    .resumen-box-title { font-size: 11px; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 10px; }
+    .res-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 5px 0; font-size: 13px; border-bottom: 1px solid #F0E8E8; gap: 8px; }
+    .res-row:last-child { border-bottom: none; }
+    .rl { color: var(--muted); flex-shrink: 0; }
+    .rv { font-weight: 600; color: var(--text); text-align: right; }
+
+    .cta-msg { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 12px; }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
+
+    /* ── WA SVG ── */
+    .wa-svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+    /* ── STEPS ── */
+    .step { display: none; }
+    .step.active { display: block; }
+
+    @media (max-width: 400px) {
+      .brand-name  { font-size: 16px; }
+      .step-title  { font-size: 17px; }
+      .stat-num    { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+
+  <!-- HEADER -->
+  <div class="card-header">
+    <div class="brand-logo">⚖️</div>
+    <div class="brand-name">Reclamo Legal Argentina</div>
+    <div class="brand-tag">Defensa al Consumidor · Ley 24.240</div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap">
+    <div class="progress-bar" id="progressBar" style="width:16%"></div>
+  </div>
+
+  <!-- STEP LABEL -->
+  <div class="step-label" id="stepLabel">
+    <div class="step-num" id="stepNum">1</div>
+    <span id="stepText">Paso 1 — Datos del reclamo</span>
+  </div>
+
+  <!-- ══ PASO 1: Datos del reclamo ══ -->
+  <div id="step1" class="step active">
+    <div class="card-body">
+      <div class="step-title">Contanos tu caso</div>
+      <div class="step-desc">Completá los datos del inconveniente que querés reclamar. Es gratis y sin compromiso.</div>
+
+      <div class="field">
+        <label for="empresa">Empresa con la que tenés inconvenientes *</label>
+        <input type="text" id="empresa" placeholder="Ej: Banco Galicia, Personal, Mercado Libre..." autocomplete="off">
+        <div class="field-err" id="err-empresa">Ingresá el nombre de la empresa</div>
+      </div>
+
+      <div class="field">
+        <label for="motivo">Motivo del reclamo *</label>
+        <select id="motivo">
+          <option value="">— Seleccioná el motivo —</option>
+          <option value="Cobros no reconocidos / débitos indebidos">Cobros no reconocidos / débitos indebidos</option>
+          <option value="Producto defectuoso o servicio deficiente">Producto defectuoso o servicio deficiente</option>
+          <option value="Incumplimiento de garantía">Incumplimiento de garantía</option>
+          <option value="Negativa a reintegrar dinero">Negativa a reintegrar dinero</option>
+          <option value="Publicidad o promoción engañosa">Publicidad o promoción engañosa</option>
+          <option value="Demora o incumplimiento en la entrega">Demora o incumplimiento en la entrega</option>
+          <option value="Cancelación unilateral del servicio">Cancelación unilateral del servicio</option>
+          <option value="Abuso de cláusulas contractuales">Abuso de cláusulas contractuales</option>
+          <option value="Otro">Otro</option>
+        </select>
+        <div class="field-err" id="err-motivo">Seleccioná el motivo del reclamo</div>
+      </div>
+
+      <div class="field">
+        <label for="monto">Monto por el cual originó el reclamo *</label>
+        <div class="monto-wrap">
+          <span class="monto-prefix">$</span>
+          <input type="text" id="monto" placeholder="Ej: 150000" inputmode="numeric">
+        </div>
+        <div class="field-err" id="err-monto">Ingresá un monto válido (solo números)</div>
+      </div>
+
+      <button class="btn btn-primary" onclick="irAPaso2()">Continuar →</button>
+      <p class="disclaimer">🔒 Tus datos son confidenciales y se usan exclusivamente para gestionar tu caso.</p>
+    </div>
+  </div>
+
+  <!-- ══ PASO 2: Datos personales ══ -->
+  <div id="step2" class="step">
+    <div class="card-body">
+      <div class="step-title">Tus datos de contacto</div>
+      <div class="step-desc">Necesitamos tus datos para enviarte toda la información sobre tu caso y los próximos pasos.</div>
+
+      <div class="field">
+        <label for="nombre">Nombre y apellido *</label>
+        <input type="text" id="nombre" placeholder="Ej: María González" autocomplete="name">
+        <div class="field-err" id="err-nombre">Ingresá tu nombre y apellido</div>
+      </div>
+
+      <div class="field">
+        <label for="telefono">Teléfono / WhatsApp *</label>
+        <input type="tel" id="telefono" placeholder="Ej: 3511234567" autocomplete="tel" inputmode="tel">
+        <div class="field-err" id="err-telefono">Ingresá exactamente 10 dígitos (ej: 3511234567)</div>
+      </div>
+
+      <div class="field">
+        <label for="dni">DNI *</label>
+        <input type="text" id="dni" placeholder="Ej: 30123456" inputmode="numeric" maxlength="9">
+        <div class="field-err" id="err-dni">Ingresá un DNI válido (7 u 8 dígitos)</div>
+      </div>
+
+      <div class="field">
+        <label for="email">Email *</label>
+        <input type="email" id="email" placeholder="Ej: maria@gmail.com" autocomplete="email">
+        <div class="field-err" id="err-email">Ingresá un email válido</div>
+      </div>
+
+      <button class="btn btn-primary" onclick="enviarYMostrarResultado()">Analizar mi reclamo →</button>
+      <button class="btn btn-ghost"   onclick="volverAPaso1()">← Volver</button>
+      <p class="disclaimer">🔒 Sin costo. Sin compromiso. Te contactamos a la brevedad.</p>
+    </div>
+  </div>
+
+  <!-- ══ CARGANDO ══ -->
+  <div id="stepLoading" class="step">
+    <div class="card-body">
+      <div class="spinner"></div>
+      <div class="loading-title">Analizando tu reclamo...</div>
+      <div class="loading-steps">
+        <div class="ls" id="ls1"><span class="ic">🔍</span> Verificando empresa reclamada...</div>
+        <div class="ls" id="ls2"><span class="ic">📋</span> Consultando antecedentes del caso...</div>
+        <div class="ls" id="ls3"><span class="ic">⚖️</span> Evaluando viabilidad legal...</div>
+        <div class="ls" id="ls4"><span class="ic">📄</span> Generando informe preliminar...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ RESULTADO ══ -->
+  <div id="stepResult" class="step">
+    <div class="card-body">
+
+      <div class="result-icon">✅</div>
+      <div class="result-title" id="resultTitle">¡Tomamos tu reclamo!</div>
+      <div class="result-sub" id="resultSub">
+        Analizamos casos similares al tuyo y tenemos muy buenas noticias.
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-box green">
+          <div class="stat-num">92%</div>
+          <div class="stat-label">Tasa de éxito en casos similares</div>
+        </div>
+        <div class="stat-box gold">
+          <div class="stat-num">5×</div>
+          <div class="stat-label">Hasta 5 veces el monto reclamado</div>
+        </div>
+      </div>
+
+      <div class="resumen-box">
+        <div class="resumen-box-title">📋 Resumen de tu reclamo</div>
+        <div class="res-row"><span class="rl">Empresa</span><span class="rv" id="resEmpresa">—</span></div>
+        <div class="res-row"><span class="rl">Motivo</span><span class="rv" id="resMotivo">—</span></div>
+        <div class="res-row"><span class="rl">Monto reclamado</span><span class="rv" id="resMonto">—</span></div>
+        <div class="res-row"><span class="rl">Recupero potencial</span><span class="rv" id="resRecupero" style="color:var(--green);font-weight:800;">—</span></div>
+      </div>
+
+      <div class="cta-msg">¿Listo para iniciar la gestión?</div>
+
+      <a id="btnWa" href="#" class="btn-wa">
+        <svg class="wa-svg" viewBox="0 0 32 32" fill="white" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16 3C9.373 3 4 8.373 4 15c0 2.385.832 4.584 2.196 6.354L4 29l7.834-2.17A12.94 12.94 0 0016 28c6.627 0 12-5.373 12-12S22.627 3 16 3zm6.406 16.656c-.275.77-1.593 1.473-2.187 1.563-.556.084-1.26.12-2.032-.127a18.63 18.63 0 01-1.839-.68C14.01 19.44 11.8 17.18 11.07 16.18c-.73-1-1.193-2.108-1.193-3.217 0-1.11.49-1.65.678-1.875.187-.224.41-.28.547-.28l.39.007c.125.005.293-.048.458.35.175.42.592 1.45.644 1.556.053.105.088.228.018.366-.07.14-.105.225-.21.347-.105.12-.22.269-.314.362-.105.1-.215.21-.093.41.125.2.556.918 1.194 1.487.82.732 1.51 1.006 1.72 1.12.21.11.333.092.456-.056.125-.148.533-.623.676-.837.143-.215.285-.18.48-.108.193.072 1.225.578 1.437.683.21.104.35.156.4.242.052.085.052.49-.223 1.26z"/>
+        </svg>
+        Escribinos para iniciar el reclamo
+      </a>
+      <p class="disclaimer" style="margin-top:14px;">
+        Te atendemos de lunes a viernes de 9 a 18 h. · gestiones@reclamolegal.com · RED ALIANZA S.R.L.
+      </p>
+
+    </div>
+  </div>
+
+</div><!-- /card -->
+
+<script>
+  // ── CONFIG ────────────────────────────────────────────────────────────────
+  const GAS_URL    = 'https://script.google.com/macros/s/AKfycbyONraCdJ5eYLD3Yo2fZchJ2oMnm-4NmaJ9GK5ebdSb7mYePcZRsbnakpfYkeUpg82M/exec';
+  const WA_DEFAULT = '5491100000000'; // reemplazar con número real
+
+  const params    = new URLSearchParams(window.location.search);
+  const WA_NUMBER = params.get('wa') || WA_DEFAULT;
+
+  let datos = { empresa: '', motivo: '', monto: '', nombre: '', telefono: '', dni: '', email: '' };
+
+  // ── PASO 1 → PASO 2 ────────────────────────────────────────────────────────
+  function irAPaso2() {
+    const empresa = document.getElementById('empresa').value.trim();
+    const motivo  = document.getElementById('motivo').value;
+    const monto   = document.getElementById('monto').value.trim().replace(/\./g, '').replace(/,/g, '');
+
+    setErr('empresa', empresa.length < 2,        'err-empresa');
+    setErr('motivo',  !motivo,                   'err-motivo');
+    setErr('monto',   !/^\d+$/.test(monto),      'err-monto');
+    if (!valid('empresa') || !valid('motivo') || !valid('monto')) return;
+
+    datos.empresa = empresa;
+    datos.motivo  = motivo;
+    datos.monto   = monto;
+
+    showStep('step2');
+    setLabel(2, 'Paso 2 — Tus datos de contacto', 50);
+  }
+
+  function volverAPaso1() {
+    showStep('step1');
+    setLabel(1, 'Paso 1 — Datos del reclamo', 16);
+  }
+
+  // ── PASO 2 → LOADING → RESULTADO ─────────────────────────────────────────
+  function enviarYMostrarResultado() {
+    const nombre   = document.getElementById('nombre').value.trim();
+    const telefono = document.getElementById('telefono').value.trim().replace(/[\s\-\+\(\)]/g, '');
+    const dni      = document.getElementById('dni').value.trim().replace(/\./g, '');
+    const email    = document.getElementById('email').value.trim();
+
+    setErr('nombre',   nombre.length < 3,                         'err-nombre');
+    setErr('telefono', !/^\d{10}$/.test(telefono),                'err-telefono');
+    setErr('dni',      !/^\d{7,8}$/.test(dni),                    'err-dni');
+    setErr('email',    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email), 'err-email');
+    if (!valid('nombre') || !valid('telefono') || !valid('dni') || !valid('email')) return;
+
+    datos.nombre   = nombre;
+    datos.telefono = telefono;
+    datos.dni      = dni;
+    datos.email    = email;
+
+    document.getElementById('stepLabel').style.opacity = '0';
+    showStep('stepLoading');
+
+    ['ls1','ls2','ls3','ls4'].forEach((id, i) => {
+      setTimeout(() => {
+        document.getElementById(id).classList.add('show');
+        if (i > 0) document.getElementById('ls' + i).classList.add('done');
+      }, i * 900 + 300);
+    });
+
+    // Enviar lead al GAS (fire & forget, no-cors)
+    fetch(GAS_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ ...datos, waNumero: WA_NUMBER }),
+    }).catch(() => {});
+
+    setTimeout(mostrarResultado, 4200);
+  }
+
+  function mostrarResultado() {
+    document.getElementById('stepLabel').style.display = 'none';
+    document.getElementById('progressBar').style.width = '100%';
+    showStep('stepResult');
+
+    document.getElementById('resultTitle').textContent =
+      `¡Tomamos tu reclamo, ${datos.nombre.split(' ')[0]}!`;
+    document.getElementById('resultSub').textContent =
+      `Analizamos tu caso contra ${datos.empresa} y tenemos muy buenas noticias.`;
+
+    const montoNum    = parseInt(datos.monto, 10);
+    const recupero    = montoNum * 5;
+    const fmt         = n => '$' + n.toLocaleString('es-AR');
+
+    document.getElementById('resEmpresa').textContent  = datos.empresa;
+    document.getElementById('resMotivo').textContent   = datos.motivo;
+    document.getElementById('resMonto').textContent    = fmt(montoNum);
+    document.getElementById('resRecupero').textContent = 'hasta ' + fmt(recupero);
+
+    const msg = encodeURIComponent(
+      `Hola! Acabo de cargar mi reclamo contra ${datos.empresa} por ${datos.motivo}. ` +
+      `Monto reclamado: $${montoNum.toLocaleString('es-AR')}. Soy ${datos.nombre}, ` +
+      `DNI ${datos.dni}. Quiero iniciar la gestión.`
+    );
+    document.getElementById('btnWa').href = `https://wa.me/${WA_NUMBER}?text=${msg}`;
+  }
+
+  // ── HELPERS ───────────────────────────────────────────────────────────────
+  function showStep(id) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+  function setLabel(num, texto, pct) {
+    const sl = document.getElementById('stepLabel');
+    sl.style.display  = 'flex';
+    sl.style.opacity  = '1';
+    document.getElementById('stepNum').textContent  = num;
+    document.getElementById('stepText').textContent = texto;
+    document.getElementById('progressBar').style.width = pct + '%';
+  }
+  function setErr(inputId, hasErr, errId) {
+    const el = document.getElementById(inputId);
+    if (el) el.classList.toggle('has-error', hasErr);
+    const er = document.getElementById(errId);
+    if (er) er.style.display = hasErr ? 'block' : 'none';
+  }
+  function valid(id) {
+    const el = document.getElementById(id);
+    return el && !el.classList.contains('has-error');
+  }
+</script>
+</body>
+</html>
