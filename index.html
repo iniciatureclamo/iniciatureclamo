@@ -243,9 +243,31 @@
         <label for="monto">Monto por el cual originó el reclamo *</label>
         <div class="monto-wrap">
           <span class="monto-prefix">$</span>
-          <input type="text" id="monto" placeholder="Ej: 150000" inputmode="numeric">
+          <input type="text" id="monto" placeholder="Ej: 300000" inputmode="numeric">
         </div>
         <div class="field-err" id="err-monto">Ingresá un monto válido (solo números)</div>
+        <div class="field-err" id="err-monto-min" style="display:none;">El monto mínimo para gestionar tu reclamo es de $300.000</div>
+      </div>
+
+      <div class="field">
+        <label for="solucion">¿Qué solución o resarcimiento buscás? *</label>
+        <select id="solucion">
+          <option value="">— Seleccioná una opción —</option>
+          <option value="Devolución del dinero cobrado indebidamente">Devolución del dinero cobrado indebidamente</option>
+          <option value="Indemnización por daños y perjuicios">Indemnización por daños y perjuicios</option>
+          <option value="Reparación o reemplazo del producto">Reparación o reemplazo del producto</option>
+          <option value="Cumplimiento del servicio contratado">Cumplimiento del servicio contratado</option>
+          <option value="Rescisión del contrato sin penalidad">Rescisión del contrato sin penalidad</option>
+          <option value="Daño moral + compensación económica">Daño moral + compensación económica</option>
+          <option value="Otro">Otro</option>
+        </select>
+        <div class="field-err" id="err-solucion">Seleccioná qué solución buscás</div>
+      </div>
+
+      <div class="field">
+        <label for="descripcion">Describí brevemente tu reclamo *</label>
+        <textarea id="descripcion" rows="3" placeholder="Contanos qué pasó con esta empresa y por qué querés reclamar..."></textarea>
+        <div class="field-err" id="err-descripcion">Describí brevemente tu reclamo (mínimo 20 caracteres)</div>
       </div>
 
       <button class="btn btn-primary" onclick="irAPaso2()">Continuar →</button>
@@ -357,22 +379,40 @@
   const params    = new URLSearchParams(window.location.search);
   const WA_NUMBER = params.get('wa') || WA_DEFAULT;
 
-  let datos = { empresa: '', motivo: '', monto: '', nombre: '', telefono: '', dni: '', email: '' };
+  let datos = { empresa: '', motivo: '', monto: '', solucion: '', descripcion: '', nombre: '', telefono: '', dni: '', email: '' };
 
   // ── PASO 1 → PASO 2 ────────────────────────────────────────────────────────
   function irAPaso2() {
-    const empresa = document.getElementById('empresa').value.trim();
-    const motivo  = document.getElementById('motivo').value;
-    const monto   = document.getElementById('monto').value.trim().replace(/\./g, '').replace(/,/g, '');
+    const empresa     = document.getElementById('empresa').value.trim();
+    const motivo      = document.getElementById('motivo').value;
+    const monto       = document.getElementById('monto').value.trim().replace(/\./g, '').replace(/,/g, '');
+    const solucion    = document.getElementById('solucion').value;
+    const descripcion = document.getElementById('descripcion').value.trim();
 
-    setErr('empresa', empresa.length < 2,        'err-empresa');
-    setErr('motivo',  !motivo,                   'err-motivo');
-    setErr('monto',   !/^\d+$/.test(monto),      'err-monto');
-    if (!valid('empresa') || !valid('motivo') || !valid('monto')) return;
+    const montoNum  = parseInt(monto, 10);
+    const montoInv  = !/^\d+$/.test(monto);
+    const montoMin  = !montoInv && montoNum <= 100000;
 
-    datos.empresa = empresa;
-    datos.motivo  = motivo;
-    datos.monto   = monto;
+    setErr('empresa',     empresa.length < 2,         'err-empresa');
+    setErr('motivo',      !motivo,                    'err-motivo');
+    setErr('monto',       montoInv,                   'err-monto');
+    setErr('solucion',    !solucion,                  'err-solucion');
+    setErr('descripcion', descripcion.length < 20,    'err-descripcion');
+
+    // Monto mínimo: mostrar error específico
+    document.getElementById('err-monto-min').style.display = montoMin ? 'block' : 'none';
+    if (montoMin) {
+      document.getElementById('monto').classList.add('has-error');
+      return;
+    }
+
+    if (!valid('empresa') || !valid('motivo') || montoInv || !valid('solucion') || !valid('descripcion')) return;
+
+    datos.empresa     = empresa;
+    datos.motivo      = motivo;
+    datos.monto       = monto;
+    datos.solucion    = solucion;
+    datos.descripcion = descripcion;
 
     showStep('step2');
     setLabel(2, 'Paso 2 — Tus datos de contacto', 50);
@@ -442,8 +482,9 @@
 
     const msg = encodeURIComponent(
       `Hola! Acabo de cargar mi reclamo contra ${datos.empresa} por ${datos.motivo}. ` +
-      `Monto reclamado: $${montoNum.toLocaleString('es-AR')}. Soy ${datos.nombre}, ` +
-      `DNI ${datos.dni}. Quiero iniciar la gestión.`
+      `Monto reclamado: $${montoNum.toLocaleString('es-AR')}. ` +
+      `Solución buscada: ${datos.solucion}. ` +
+      `Soy ${datos.nombre}, DNI ${datos.dni}. Quiero iniciar la gestión.`
     );
     document.getElementById('btnWa').href = `https://wa.me/${WA_NUMBER}?text=${msg}`;
   }
