@@ -378,7 +378,11 @@
   const params    = new URLSearchParams(window.location.search);
   const WA_NUMBER = params.get('wa') || WA_DEFAULT;
 
-  let datos = { empresa: '', motivo: '', monto: '', solucion: '', descripcion: '', nombre: '', telefono: '', dni: '', email: '' };
+  let datos = { empresa: '', motivo: '', monto: '', solucion: '', descripcion: '', nombre: '', telefono: '', dni: '', email: '', leadId: '' };
+
+  function generarLeadId_() {
+    return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+  }
 
   // ── PASO 1 → PASO 2 ────────────────────────────────────────────────────────
   function irAPaso2() {
@@ -403,6 +407,14 @@
     datos.monto       = monto;
     datos.solucion    = solucion;
     datos.descripcion = descripcion;
+    if (!datos.leadId) datos.leadId = generarLeadId_();
+
+    // Enviar lead parcial al GAS apenas termina el paso 1 (fire & forget, no-cors)
+    fetch(GAS_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ ...datos, waNumero: WA_NUMBER }),
+    }).catch(() => {});
 
     showStep('step2');
     setLabel(2, 'Paso 2 — Tus datos de contacto', 50);
