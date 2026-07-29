@@ -527,7 +527,7 @@
         <div style="font-size:44px;font-weight:900;color:#fff;line-height:1;">$24.100</div>
         <div style="font-size:12px;color:rgba(255,255,255,.75);margin-top:8px;">IVA incluido · Total $48.200</div>
         <div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.15);font-size:12px;color:rgba(255,255,255,.7);line-height:1.4;">
-          1ª cuota al contratar · 2ª cuota al finalizar la gestión inicial
+          1ª cuota al contratar · 2ª cuota finalizando la gestión inicial
         </div>
       </div>
 
@@ -643,7 +643,7 @@
       <div class="plan sel" id="plan2c" onclick="selPlan(2, 24100)">
         <div class="plan-title">2 cuotas</div>
         <div class="plan-price">$24.100 <span>/ cuota</span></div>
-        <div class="plan-desc">1ª cuota al contratar · 2ª al finalizar la gestión inicial</div>
+        <div class="plan-desc">1ª cuota al contratar · 2ª finalizando la gestión inicial</div>
       </div>
 
       <button class="btn btn-primary" onclick="irAFecha()" style="margin-top:20px;">Continuar →</button>
@@ -661,11 +661,11 @@
         <div class="do-check sel" id="chkOpc1">✓</div>
       </div>
       <div class="date-opt" id="dOpc2" onclick="selFecha('dOpc2')">
-        <div><div class="do-label">Mañana</div><div class="do-sub" id="lblOpc2"></div></div>
+        <div><div class="do-label">En 5 días hábiles</div><div class="do-sub" id="lblOpc2"></div></div>
         <div class="do-check" id="chkOpc2"></div>
       </div>
       <div class="date-opt" id="dOpc3" onclick="selFecha('dOpc3')">
-        <div><div class="do-label">En 3 días</div><div class="do-sub" id="lblOpc3"></div></div>
+        <div><div class="do-label">En 8 días hábiles</div><div class="do-sub" id="lblOpc3"></div></div>
         <div class="do-check" id="chkOpc3"></div>
       </div>
 
@@ -924,8 +924,8 @@
   function initFechas() {
     const hoy = new Date();
     document.getElementById('lblOpc1').textContent = fmtFecha(hoy);
-    document.getElementById('lblOpc2').textContent = fmtFecha(addDias(hoy, 1));
-    document.getElementById('lblOpc3').textContent = fmtFecha(addHabiles(hoy, 3));
+    document.getElementById('lblOpc2').textContent = fmtFecha(addHabiles(hoy, 5));
+    document.getElementById('lblOpc3').textContent = fmtFecha(addHabiles(hoy, 8));
     fechaSel = fmtFecha(hoy);
   }
   function selFecha(id) {
