@@ -4,20 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Iniciá tu Reclamo — Reclamo Legal Argentina</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='88'%3E%E2%9A%96%EF%B8%8F%3C/text%3E%3C/svg%3E">
+  <meta name="theme-color" content="#0D1B6E">
   <style>
     :root {
-      --primary:       #7B1A1A;
-      --primary-light: #A52929;
+      --primary:       #0D1B6E;
+      --primary-light: #1A2FAD;
       --accent:        #DC2626;
       --accent-light:  #FEE2E2;
       --green:         #16A34A;
+      --green-dark:    #15803D;
       --green-light:   #DCFCE7;
-      --gold:          #D97706;
-      --gold-light:    #FEF3C7;
+      --gold:          #B45309;
       --text:          #111827;
       --muted:         #6B7280;
       --border:        #E5E7EB;
-      --bg:            #F9F5F5;
+      --bg:            #F3F4F6;
       --white:         #FFFFFF;
       --wa:            #25D366;
     }
@@ -26,34 +28,24 @@
       font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
       background: var(--bg);
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
       padding: 16px;
     }
-
-    /* ── CARD ── */
     .card {
-      background: var(--white);
-      border-radius: 20px;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.13);
-      width: 100%;
-      max-width: 460px;
-      overflow: hidden;
+      background: var(--white); border-radius: 20px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+      width: 100%; max-width: 460px; overflow: hidden;
     }
     .card-header {
       background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-      padding: 26px 24px 20px;
-      text-align: center;
-      color: var(--white);
+      padding: 26px 24px 20px; text-align: center; color: var(--white);
     }
-    .brand-logo  { font-size: 26px; margin-bottom: 4px; }
-    .brand-name  { font-size: 19px; font-weight: 800; letter-spacing: -0.3px; }
-    .brand-tag   { font-size: 11px; opacity: 0.75; margin-top: 3px; text-transform: uppercase; letter-spacing: 0.9px; }
+    .brand-row { display:flex; align-items:center; justify-content:center; gap:9px; }
+    .brand-ic { font-size: 24px; line-height:1; }
+    .brand-name    { font-size: 20px; font-weight: 800; letter-spacing: -0.3px; }
+    .brand-tagline { font-size: 11px; opacity: 0.72; margin-top: 5px; text-transform: uppercase; letter-spacing: 0.8px; }
 
-    /* ── PROGRESS ── */
-    .progress-wrap { background: #F0E8E8; height: 5px; }
+    .progress-wrap { background: #E8EAF6; height: 5px; }
     .progress-bar  { height: 100%; background: var(--wa); transition: width 0.45s ease; }
 
     .step-label {
@@ -72,32 +64,23 @@
     .step-title { font-size: 19px; font-weight: 700; color: var(--text); margin-bottom: 5px; }
     .step-desc  { font-size: 13.5px; color: var(--muted); line-height: 1.55; margin-bottom: 22px; }
 
-    /* ── FORM ── */
     .field { margin-bottom: 16px; }
     label  { display: block; font-size: 12.5px; font-weight: 600; color: var(--text); margin-bottom: 5px; }
     input, select, textarea {
       width: 100%; padding: 12px 14px; border: 1.5px solid var(--border);
       border-radius: 10px; font-size: 15px; color: var(--text);
-      outline: none; transition: border-color .2s, box-shadow .2s;
-      background: var(--white); font-family: inherit;
+      outline: none; transition: border-color .2s, box-shadow .2s; background: var(--white);
+      font-family: inherit;
     }
-    input:focus, select:focus, textarea:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(123,26,26,.08);
-    }
+    textarea { resize: vertical; min-height: 74px; line-height: 1.5; }
+    select { appearance: none; -webkit-appearance:none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236B7280' d='M6 8 0 0h12z'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position: right 14px center; padding-right: 34px; }
+    input:focus, select:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(13,27,110,.08); }
     input.has-error, select.has-error, textarea.has-error { border-color: var(--accent); }
-    textarea { resize: none; }
     .field-err { font-size: 11.5px; color: var(--accent); margin-top: 4px; display: none; }
+    .input-money { position: relative; }
+    .input-money span { position:absolute; left:13px; top:50%; transform:translateY(-50%); color:var(--muted); font-size:15px; font-weight:600; pointer-events:none; }
+    .input-money input { padding-left: 28px; }
 
-    /* ── MONTO ── */
-    .monto-wrap { position: relative; }
-    .monto-prefix {
-      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
-      font-size: 15px; color: var(--muted); pointer-events: none; font-weight: 600;
-    }
-    .monto-wrap input { padding-left: 28px; }
-
-    /* ── BUTTONS ── */
     .btn {
       width: 100%; padding: 14px; border: none; border-radius: 10px;
       font-size: 15.5px; font-weight: 700; cursor: pointer;
@@ -106,22 +89,38 @@
     .btn:active { transform: scale(.985); }
     .btn-primary { background: var(--primary); color: var(--white); }
     .btn-primary:hover { opacity: .88; }
+    .btn-green { background: var(--green); color: var(--white); }
+    .btn-green:hover { opacity: .9; }
     .btn-ghost  { background: var(--bg); color: var(--muted); font-weight: 600; margin-top: 8px; }
     .btn-ghost:hover { background: var(--border); }
     .btn-wa {
       background: var(--wa); color: var(--white);
       display: flex; align-items: center; justify-content: center; gap: 10px;
       font-size: 16px; text-decoration: none; border-radius: 10px;
-      padding: 15px; font-weight: 700; transition: opacity .2s;
-      border: none; cursor: pointer; width: 100%;
+      padding: 14px; font-weight: 700; transition: opacity .2s; border: none; cursor: pointer; width: 100%;
     }
     .btn-wa:hover { opacity: .9; }
     .disclaimer { font-size: 11px; color: var(--muted); text-align: center; margin-top: 14px; line-height: 1.5; }
+    .checkpoint { border: 1.5px solid #E2E8F0; border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: border-color .2s, background .2s; user-select: none; }
+    .checkpoint:hover { border-color: #86EFAC; background: #F0FDF4; }
+    .checkpoint.sel { border-color: var(--green); background: #F0FDF4; }
+    .cp-box { width: 22px; height: 22px; border-radius: 6px; border: 2px solid #D1D5DB; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: background .2s, border-color .2s; font-size: 13px; font-weight: 800; color: white; }
+    .checkpoint.sel .cp-box { background: var(--green); border-color: var(--green); }
+    .cp-text { font-size: 14px; color: #374151; font-weight: 500; line-height: 1.4; }
+    .checkpoint.sel .cp-text { color: var(--green-dark); font-weight: 700; }
+    .faq-item { border: 1.5px solid #E2E8F0; border-radius: 10px; margin-bottom: 8px; overflow: hidden; background: #fff; }
+    .faq-q { width: 100%; background: transparent; border: none; padding: 14px 16px; text-align: left; font-size: 13.5px; font-weight: 700; color: #111827; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 10px; line-height: 1.4; }
+    .faq-item.faq-open .faq-q { color: var(--primary); background: #EEF2FF; }
+    .faq-icon { font-size: 22px; font-weight: 300; flex-shrink: 0; transition: transform .25s; color: #6B7280; }
+    .faq-item.faq-open .faq-icon { transform: rotate(45deg); color: var(--primary); }
+    .faq-a { max-height: 0; overflow: hidden; transition: max-height .3s ease, padding .3s ease; padding: 0 16px; font-size: 13px; color: #374151; line-height: 1.7; }
+    .faq-item.faq-open .faq-a { max-height: 360px; padding: 4px 16px 16px; }
+    .btn-copy { background:#2563eb;color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .2s; }
+    .btn-copy.ok { background:#16a34a; }
 
-    /* ── LOADING ── */
     #stepLoading .card-body { padding: 44px 24px; text-align: center; }
     .spinner {
-      width: 64px; height: 64px; border: 5px solid #F0E8E8;
+      width: 64px; height: 64px; border: 5px solid #E8EAF6;
       border-top-color: var(--primary); border-radius: 50%;
       animation: spin .9s linear infinite; margin: 0 auto 20px;
     }
@@ -133,59 +132,132 @@
     .ls.done { color: var(--green); }
     .ls .ic  { width: 16px; flex-shrink: 0; }
 
-    /* ── RESULTADO ── */
-    #stepResult .card-body { padding: 30px 24px 28px; text-align: center; }
-    .result-icon {
-      width: 86px; height: 86px; border-radius: 50%;
-      background: var(--green-light); border: 4px solid #86EFAC;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 38px; margin: 0 auto 18px;
+    #stepResult .card-body { padding: 32px 24px 28px; text-align: center; }
+    .score-badge { text-align: center; margin: 2px auto 16px; }
+    .score-badge svg { display: block; margin: 0 auto 11px; filter: drop-shadow(0 8px 16px rgba(22,163,74,.32)); }
+    .badge-label {
+      display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: 1.3px;
+      color: var(--green-dark); background: var(--green-light); border: 1px solid #86EFAC;
+      border-radius: 999px; padding: 5px 15px; text-transform: uppercase;
     }
-    .result-title {
-      font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 8px;
+    .proof-row { display: flex; gap: 10px; margin: 4px 0 16px; }
+    .proof-tile { flex: 1; border: 1.5px solid var(--border); border-radius: 12px; padding: 12px 8px; background: var(--white); }
+    .proof-n { font-size: 25px; font-weight: 900; color: var(--green); line-height: 1; }
+    .proof-tile.p2 .proof-n { color: var(--primary); }
+    .proof-l { font-size: 10.5px; color: var(--muted); font-weight: 600; margin-top: 5px; line-height: 1.3; }
+    .exito-note {
+      background: var(--green-light); border: 1.5px solid #86EFAC; border-radius: 10px;
+      padding: 11px 14px; font-size: 12.5px; color: var(--green-dark); line-height: 1.55;
+      text-align: left; margin-bottom: 18px;
     }
-    .result-sub {
-      font-size: 13.5px; color: var(--muted); line-height: 1.6; margin-bottom: 20px;
+    .result-title { font-size: 21px; font-weight: 800; color: var(--green-dark); margin: 6px 0 8px; }
+    .result-msg   { font-size: 13.5px; color: #374151; line-height: 1.6; margin-bottom: 16px; }
+    .resarc-box {
+      background: linear-gradient(135deg,#065F46,#16A34A); border-radius: 14px;
+      padding: 16px; margin: 0 0 8px; color:#fff;
     }
-
-    /* ── STAT BOXES ── */
-    .stat-row { display: flex; gap: 10px; margin-bottom: 18px; }
-    .stat-box {
-      flex: 1; border-radius: 12px; padding: 14px 12px; text-align: center;
+    .resarc-box .rl { font-size: 11px; font-weight:700; text-transform:uppercase; letter-spacing:.8px; opacity:.85; }
+    .resarc-box .rv { font-size: 34px; font-weight: 800; line-height:1.1; margin-top:2px; }
+    .resarc-box .rs { font-size: 11.5px; opacity:.85; margin-top:4px; line-height:1.4; }
+    .notice {
+      background: var(--green-light); border: 1.5px solid #86EFAC;
+      border-radius: 10px; padding: 12px 15px; font-size: 13px;
+      color: var(--green-dark); text-align: left; margin-bottom: 20px;
     }
-    .stat-box.green { background: var(--green-light); border: 1.5px solid #86EFAC; }
-    .stat-box.gold  { background: var(--gold-light);  border: 1.5px solid #FCD34D; }
-    .stat-num  { font-size: 26px; font-weight: 900; line-height: 1; }
-    .stat-box.green .stat-num { color: var(--green); }
-    .stat-box.gold  .stat-num { color: var(--gold); }
-    .stat-label { font-size: 11px; font-weight: 600; color: var(--muted); margin-top: 4px; line-height: 1.35; text-transform: uppercase; letter-spacing: .3px; }
-
-    /* ── RESUMEN RECLAMO ── */
-    .resumen-box {
-      background: #F9F5F5; border: 1.5px solid #E8D5D5;
-      border-radius: 12px; padding: 14px 16px; margin-bottom: 18px; text-align: left;
-    }
-    .resumen-box-title { font-size: 11px; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 10px; }
-    .res-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 5px 0; font-size: 13px; border-bottom: 1px solid #F0E8E8; gap: 8px; }
-    .res-row:last-child { border-bottom: none; }
-    .rl { color: var(--muted); flex-shrink: 0; }
-    .rv { font-weight: 600; color: var(--text); text-align: right; }
-
-    .cta-msg { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 12px; }
     .divider { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
 
-    /* ── WA SVG ── */
-    .wa-svg { width: 20px; height: 20px; flex-shrink: 0; }
+    .benefit { display: flex; align-items: flex-start; gap: 12px; padding: 11px 0; border-bottom: 1px solid #F3F4F6; }
+    .benefit:last-child { border-bottom: none; }
+    .bi  { font-size: 20px; flex-shrink: 0; padding-top: 1px; }
+    .bt h4 { font-size: 13px; font-weight: 700; color: #111827; margin-bottom: 2px; }
+    .bt p  { font-size: 12px; color: #6B7280; line-height: 1.45; }
+    .alert-box {
+      background: #FFF7ED; border: 1px solid #FED7AA; border-radius: 10px;
+      padding: 12px 16px; margin-top: 14px; font-size: 13px; color: #92400E; line-height: 1.45;
+    }
 
-    /* ── STEPS ── */
+    .plan {
+      border: 2px solid var(--border); border-radius: 12px; padding: 16px;
+      margin-bottom: 10px; cursor: pointer; transition: all .2s; position: relative;
+    }
+    .plan.sel  { border-color: var(--primary); background: #EEF2FF; }
+    .plan-badge {
+      position: absolute; top: -10px; right: 14px;
+      background: var(--green); color: var(--white);
+      font-size: 10px; font-weight: 700; padding: 2px 10px;
+      border-radius: 20px; text-transform: uppercase; letter-spacing: .5px;
+    }
+    .plan-title { font-size: 13px; font-weight: 700; color: var(--muted); margin-bottom: 3px; }
+    .plan-price { font-size: 24px; font-weight: 800; color: var(--primary); line-height: 1; }
+    .plan-price span { font-size: 13px; font-weight: 400; color: var(--muted); }
+    .plan-desc  { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+    .date-opt {
+      border: 2px solid var(--border); border-radius: 10px; padding: 12px 16px;
+      margin-bottom: 8px; cursor: pointer; transition: all .2s;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .date-opt.sel { border-color: var(--primary); background: #EEF2FF; }
+    .do-label { font-size: 14px; font-weight: 600; color: #111827; }
+    .do-sub   { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .do-check {
+      width: 20px; height: 20px; border-radius: 50%; border: 2px solid #D1D5DB;
+      flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+      transition: all .2s; font-size: 11px;
+    }
+    .do-check.sel { background: var(--primary); border-color: var(--primary); color: var(--white); }
+
+    .sum-box  { background: #F9FAFB; border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; }
+    .sum-row  { display: flex; justify-content: space-between; padding: 5px 0; font-size: 13px; border-bottom: 1px solid #F3F4F6; gap:12px; }
+    .sum-row:last-child { border-bottom: none; }
+    .sl { color: var(--muted); flex-shrink:0; }
+    .sv { font-weight: 600; color: var(--text); text-align:right; }
+    .trust-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; padding: 12px 0; }
+    .ti { display: flex; flex-direction: column; align-items: center; gap: 3px; flex: 1; min-width: 58px; }
+    .ti-icon  { font-size: 20px; }
+    .ti-label { font-size: 9px; color: var(--muted); text-align: center; font-weight: 600; text-transform: uppercase; letter-spacing: .2px; line-height: 1.2; }
+    .sec-label { font-size: 11px; color: var(--muted); text-align: center; margin: 6px 0 10px; text-transform: uppercase; letter-spacing: .5px; }
+
+    .success-icon {
+      width: 72px; height: 72px; background: var(--green-light);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 32px; margin: 0 auto 14px;
+    }
+    .success-title { font-size: 20px; font-weight: 800; color: var(--text); text-align: center; margin-bottom: 8px; }
+    .success-sub   { font-size: 13px; color: var(--muted); text-align: center; line-height: 1.5; margin-bottom: 20px; }
+    .success-items { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+    .si { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #065F46; }
+    .si-check { width: 22px; height: 22px; background: var(--green-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+
     .step { display: none; }
     .step.active { display: block; }
 
     @media (max-width: 400px) {
-      .brand-name  { font-size: 16px; }
-      .step-title  { font-size: 17px; }
-      .stat-num    { font-size: 22px; }
+      .brand-name { font-size: 17px; }
+      .step-title { font-size: 17px; }
     }
+
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 1000; align-items: flex-end; justify-content: center; }
+    .modal-overlay.open { display: flex; }
+    .modal-box { background: #fff; border-radius: 20px 20px 0 0; width: 100%; max-width: 500px; max-height: 85vh; display: flex; flex-direction: column; animation: slideUp .25s ease; }
+    @keyframes slideUp { from { transform: translateY(60px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .modal-header { padding: 18px 20px 14px; border-bottom: 1px solid #E5E7EB; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+    .modal-header h3 { font-size: 15px; font-weight: 700; color: #111827; }
+    .modal-close { width: 30px; height: 30px; border-radius: 50%; background: #F3F4F6; border: none; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; color: #6B7280; flex-shrink: 0; }
+    .modal-body { overflow-y: auto; padding: 20px; flex: 1; font-size: 12.5px; color: #374151; line-height: 1.7; }
+    .modal-body h4 { font-size: 13px; font-weight: 700; color: #111827; margin: 18px 0 6px; }
+    .modal-body h4:first-child { margin-top: 0; }
+    .modal-body p  { margin-bottom: 10px; }
+    .modal-body ol { margin: 0 0 10px 18px; }
+    .modal-body li { margin-bottom: 6px; }
+    .modal-footer { padding: 14px 20px; border-top: 1px solid #E5E7EB; flex-shrink: 0; }
+
+    .np-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:1100; align-items:center; justify-content:center; padding:20px; }
+    .np-overlay.open { display:flex; }
+    .np-card { background:#fff; border-radius:18px; padding:26px 22px; max-width:380px; width:100%; text-align:center; box-shadow:0 12px 40px rgba(0,0,0,.3); animation:slideUp .25s ease; }
+    .np-ic { font-size:44px; margin-bottom:8px; }
+    .np-t  { font-size:18px; font-weight:800; color:#111827; margin-bottom:8px; }
+    .np-d  { font-size:13.5px; color:#6B7280; line-height:1.55; margin-bottom:18px; }
   </style>
 </head>
 <body>
@@ -194,15 +266,12 @@
 
   <!-- HEADER -->
   <div class="card-header">
-    <div class="brand-logo">⚖️</div>
-    <div class="brand-name">Reclamo Legal Argentina</div>
-    <div class="brand-tag">Defensa al Consumidor · Ley 24.240</div>
+    <div class="brand-row"><span class="brand-ic">⚖️</span><span class="brand-name">Reclamo Legal Argentina</span></div>
+    <div class="brand-tagline">Defensa al Consumidor · Ley 24.240</div>
   </div>
 
   <!-- PROGRESS -->
-  <div class="progress-wrap">
-    <div class="progress-bar" id="progressBar" style="width:16%"></div>
-  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:12%"></div></div>
 
   <!-- STEP LABEL -->
   <div class="step-label" id="stepLabel">
@@ -210,15 +279,15 @@
     <span id="stepText">Paso 1 — Datos del reclamo</span>
   </div>
 
-  <!-- ══ PASO 1: Datos del reclamo ══ -->
+  <!-- ══ PASO 1: SONDEO ══ -->
   <div id="step1" class="step active">
     <div class="card-body">
       <div class="step-title">Contanos tu caso</div>
       <div class="step-desc">Completá los datos del inconveniente que querés reclamar. Es gratis y sin compromiso.</div>
 
       <div class="field">
-        <label for="empresa">Empresa con la que tenés inconvenientes *</label>
-        <input type="text" id="empresa" placeholder="Ej: Banco Galicia, Personal, Mercado Libre..." autocomplete="off">
+        <label for="empresa">Empresa con la que tenés el inconveniente *</label>
+        <input type="text" id="empresa" placeholder="Ej: nombre de la empresa" autocomplete="off">
         <div class="field-err" id="err-empresa">Ingresá el nombre de la empresa</div>
       </div>
 
@@ -226,76 +295,73 @@
         <label for="motivo">Motivo del reclamo *</label>
         <select id="motivo">
           <option value="">— Seleccioná el motivo —</option>
-          <option value="Cobros no reconocidos / débitos indebidos">Cobros no reconocidos / débitos indebidos</option>
-          <option value="Producto defectuoso o servicio deficiente">Producto defectuoso o servicio deficiente</option>
-          <option value="Incumplimiento de garantía">Incumplimiento de garantía</option>
-          <option value="Negativa a reintegrar dinero">Negativa a reintegrar dinero</option>
-          <option value="Publicidad o promoción engañosa">Publicidad o promoción engañosa</option>
-          <option value="Demora o incumplimiento en la entrega">Demora o incumplimiento en la entrega</option>
-          <option value="Cancelación unilateral del servicio">Cancelación unilateral del servicio</option>
-          <option value="Abuso de cláusulas contractuales">Abuso de cláusulas contractuales</option>
-          <option value="Otro">Otro</option>
+          <option>Cobros no reconocidos / débitos indebidos</option>
+          <option>Producto defectuoso o servicio deficiente</option>
+          <option>Incumplimiento de garantía</option>
+          <option>Negativa a reintegrar dinero</option>
+          <option>Publicidad o promoción engañosa</option>
+          <option>Demora o incumplimiento en la entrega</option>
+          <option>Cancelación unilateral del servicio</option>
+          <option>Abuso de cláusulas contractuales</option>
+          <option>Otro</option>
         </select>
-        <div class="field-err" id="err-motivo">Seleccioná el motivo del reclamo</div>
+        <div class="field-err" id="err-motivo">Seleccioná un motivo</div>
       </div>
 
       <div class="field">
         <label for="monto">¿Por qué monto te afectó esta empresa? *</label>
-        <div class="monto-wrap">
-          <span class="monto-prefix">$</span>
-          <input type="text" id="monto" placeholder="Ej: 300000" inputmode="numeric">
-        </div>
-        <div class="field-err" id="err-monto">Ingresá un monto válido (solo números)</div>
+        <div class="input-money"><span>$</span><input type="text" id="monto" placeholder="Ej: 85000" inputmode="numeric"></div>
+        <div class="field-err" id="err-monto">Ingresá un monto válido</div>
       </div>
 
       <div class="field">
         <label for="solucion">¿Qué solución o resarcimiento buscás? *</label>
         <select id="solucion">
           <option value="">— Seleccioná una opción —</option>
-          <option value="Devolución del dinero cobrado indebidamente">Devolución del dinero cobrado indebidamente</option>
-          <option value="Indemnización por daños y perjuicios">Indemnización por daños y perjuicios</option>
-          <option value="Reparación o reemplazo del producto">Reparación o reemplazo del producto</option>
-          <option value="Cumplimiento del servicio contratado">Cumplimiento del servicio contratado</option>
-          <option value="Rescisión del contrato sin penalidad">Rescisión del contrato sin penalidad</option>
-          <option value="Daño moral + compensación económica">Daño moral + compensación económica</option>
-          <option value="Otro">Otro</option>
+          <option>Devolución del dinero cobrado indebidamente</option>
+          <option>Indemnización por daños y perjuicios</option>
+          <option>Reparación o reemplazo del producto</option>
+          <option>Cumplimiento del servicio contratado</option>
+          <option>Rescisión del contrato sin penalidad</option>
+          <option>Daño moral + compensación económica</option>
+          <option>Otro</option>
         </select>
-        <div class="field-err" id="err-solucion">Seleccioná qué solución buscás</div>
+        <div class="field-err" id="err-solucion">Seleccioná una opción</div>
       </div>
 
       <div class="field">
         <label for="descripcion">Describí brevemente tu reclamo *</label>
-        <textarea id="descripcion" rows="3" placeholder="Contanos qué pasó con esta empresa y por qué querés reclamar..."></textarea>
-        <div class="field-err" id="err-descripcion">Describí brevemente tu reclamo (mínimo 20 caracteres)</div>
+        <textarea id="descripcion" placeholder="Contanos qué pasó con la empresa..."></textarea>
+        <div class="field-err" id="err-descripcion">Contanos con más detalle (mínimo 20 caracteres)</div>
       </div>
 
-      <button class="btn btn-primary" onclick="irAPaso2()">Continuar →</button>
+      <button class="btn btn-primary" onclick="irADatos()">Continuar →</button>
       <p class="disclaimer">🔒 Tus datos son confidenciales y se usan exclusivamente para gestionar tu caso.</p>
     </div>
   </div>
 
-  <!-- ══ PASO 2: Datos personales ══ -->
+  <!-- ══ PASO 2: DATOS PERSONALES ══ -->
   <div id="step2" class="step">
     <div class="card-body">
       <div class="step-title">Tus datos de contacto</div>
-      <div class="step-desc">Completá tus datos para elevar tu reclamo formalmente y enviarte toda la información sobre tu caso, los próximos pasos y las acciones legales disponibles.</div>
+      <div class="step-desc">Para armar tu legajo y enviarte toda la información de tu reclamo.</div>
 
       <div class="field">
         <label for="nombre">Nombre y apellido *</label>
         <input type="text" id="nombre" placeholder="Ej: María González" autocomplete="name">
-        <div class="field-err" id="err-nombre">Ingresá tu nombre y apellido</div>
+        <div class="field-err" id="err-nombre">Ingresá tu nombre completo</div>
+      </div>
+
+      <div class="field">
+        <label for="dni">Número de DNI *</label>
+        <input type="text" id="dni" placeholder="Ej: 30123456" inputmode="numeric" maxlength="9">
+        <div class="field-err" id="err-dni">Ingresá un DNI válido (7 u 8 dígitos)</div>
       </div>
 
       <div class="field">
         <label for="telefono">Teléfono / WhatsApp *</label>
-        <input type="tel" id="telefono" placeholder="Ej: 3511234567" autocomplete="tel" inputmode="tel">
-        <div class="field-err" id="err-telefono">Ingresá exactamente 10 dígitos (ej: 3511234567)</div>
-      </div>
-
-      <div class="field">
-        <label for="dni">DNI *</label>
-        <input type="text" id="dni" placeholder="Ej: 30123456" inputmode="numeric" maxlength="9">
-        <div class="field-err" id="err-dni">Ingresá un DNI válido (7 u 8 dígitos)</div>
+        <input type="tel" id="telefono" placeholder="Ej: 1133500416" autocomplete="tel" inputmode="tel">
+        <div class="field-err" id="err-telefono">Ingresá exactamente 10 dígitos (ej: 1133500416)</div>
       </div>
 
       <div class="field">
@@ -304,9 +370,9 @@
         <div class="field-err" id="err-email">Ingresá un email válido</div>
       </div>
 
-      <button class="btn btn-primary" onclick="enviarYMostrarResultado()">Analizar mi reclamo →</button>
+      <button class="btn btn-primary" onclick="analizarCaso()">🔎 ANALIZAR MI CASO</button>
       <button class="btn btn-ghost"   onclick="volverAPaso1()">← Volver</button>
-      <p class="disclaimer">🔒 Sin costo. Sin compromiso. Te contactamos a la brevedad.</p>
+      <p class="disclaimer">Análisis sin cargo y sin compromiso.</p>
     </div>
   </div>
 
@@ -314,206 +380,801 @@
   <div id="stepLoading" class="step">
     <div class="card-body">
       <div class="spinner"></div>
-      <div class="loading-title">Analizando tu reclamo...</div>
+      <div class="loading-title">Analizando tu caso...</div>
       <div class="loading-steps">
-        <div class="ls" id="ls1"><span class="ic">🔍</span> Verificando empresa reclamada...</div>
-        <div class="ls" id="ls2"><span class="ic">📋</span> Consultando antecedentes del caso...</div>
-        <div class="ls" id="ls3"><span class="ic">⚖️</span> Evaluando viabilidad legal...</div>
-        <div class="ls" id="ls4"><span class="ic">📄</span> Generando informe preliminar...</div>
+        <div class="ls" id="ls1"><span class="ic">📋</span> Revisando el motivo de tu reclamo...</div>
+        <div class="ls" id="ls2"><span class="ic">⚖️</span> Verificando la normativa que te ampara...</div>
+        <div class="ls" id="ls3"><span class="ic">💰</span> Estimando el resarcimiento que podés exigir...</div>
+        <div class="ls" id="ls4"><span class="ic">📄</span> Generando tu informe personalizado...</div>
       </div>
     </div>
   </div>
 
-  <!-- ══ RESULTADO ══ -->
+  <!-- ══ RESULTADO (POSITIVO) ══ -->
   <div id="stepResult" class="step">
     <div class="card-body">
 
-      <div class="result-icon">✅</div>
-      <div class="result-title" id="resultTitle">¡Tomamos tu reclamo!</div>
-      <div class="result-sub" id="resultSub">
-        Analizamos casos similares al tuyo y tenemos muy buenas noticias.
+      <div class="score-badge">
+        <svg viewBox="0 0 80 80" width="86" height="86" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="40" cy="40" r="37" fill="url(#rlgrad)"/>
+          <circle cx="40" cy="40" r="37" fill="none" stroke="#ffffff" stroke-width="2.5"/>
+          <circle cx="40" cy="40" r="31" fill="none" stroke="#ffffff" stroke-width="1.5" opacity=".45"/>
+          <path d="M26 41.5 L36 51 L55 30" stroke="#ffffff" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <defs>
+            <linearGradient id="rlgrad" x1="40" y1="3" x2="40" y2="77" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#22C55E"/><stop offset="1" stop-color="#15803D"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="badge-label">✓ Reclamo viable</div>
       </div>
 
-      <div class="stat-row">
-        <div class="stat-box green">
-          <div class="stat-num">92%</div>
-          <div class="stat-label">Tasa de éxito en casos similares</div>
+      <div class="result-title">¡Tenés derecho a reclamar!</div>
+      <div class="result-msg" id="resultMsg"></div>
+
+      <div class="proof-row">
+        <div class="proof-tile">
+          <div class="proof-n">92%</div>
+          <div class="proof-l">Efectividad en<br>casos similares</div>
         </div>
-        <div class="stat-box gold">
-          <div class="stat-num">5×</div>
-          <div class="stat-label">Hasta 5 veces el monto reclamado</div>
+        <div class="proof-tile p2">
+          <div class="proof-n">3×</div>
+          <div class="proof-l">Reclamamos hasta<br>3× el monto</div>
         </div>
       </div>
 
-      <div class="resumen-box">
-        <div class="resumen-box-title">📋 Resumen de tu reclamo</div>
-        <div class="res-row"><span class="rl">Empresa</span><span class="rv" id="resEmpresa">—</span></div>
-        <div class="res-row"><span class="rl">Motivo</span><span class="rv" id="resMotivo">—</span></div>
-        <div class="res-row"><span class="rl">Monto reclamado</span><span class="rv" id="resMonto">—</span></div>
-        <div class="res-row"><span class="rl">💰 Podés obtener hasta</span><span class="rv" id="resRecupero" style="color:var(--green);font-weight:800;">—</span></div>
+      <div class="resarc-box">
+        <div class="rl">Resarcimiento estimado a exigir</div>
+        <div class="rv" id="resarcMonto">—</div>
+        <div class="rs">Es lo que reclamaremos a la empresa en tu nombre por el daño y los gastos que te ocasionó.</div>
+      </div>
+      <p style="font-size:10.5px;color:#9CA3AF;line-height:1.4;margin:6px 0 14px;">*Estimación orientativa según casos similares. El resultado final depende de la aceptación de la empresa; no está garantizado.</p>
+
+      <div class="exito-note">
+        🏆 En casos similares logramos que las empresas <strong>devuelvan el dinero</strong> y paguen una <strong>compensación de hasta 3× el monto reclamado</strong> por el daño ocasionado.
       </div>
 
-      <div class="cta-msg">¿Listo para iniciar la gestión?</div>
+      <div style="text-align:center;margin:6px 0 14px;">
+        <div style="font-size:16px;font-weight:800;color:#111827;line-height:1.3;">¿Qué querés lograr con tu reclamo?</div>
+        <div style="font-size:13px;color:#6B7280;margin-top:5px;">Seleccioná todo lo que aplica a tu caso</div>
+      </div>
 
-      <a id="btnWa" href="#" class="btn-wa">
-        <svg class="wa-svg" viewBox="0 0 32 32" fill="white" xmlns="http://www.w3.org/2000/svg">
+      <div class="checkpoint" id="cp1" onclick="this.classList.toggle('sel')">
+        <div class="cp-box"><span class="cp-check">✓</span></div>
+        <div class="cp-text">Recuperar el dinero que perdí.</div>
+      </div>
+      <div class="checkpoint" id="cp2" onclick="this.classList.toggle('sel')">
+        <div class="cp-box"><span class="cp-check">✓</span></div>
+        <div class="cp-text">Que me indemnicen por el daño y el mal momento.</div>
+      </div>
+      <div class="checkpoint" id="cp3" onclick="this.classList.toggle('sel')">
+        <div class="cp-box"><span class="cp-check">✓</span></div>
+        <div class="cp-text">Que la empresa se haga responsable de una vez.</div>
+      </div>
+      <div class="checkpoint" id="cp4" onclick="this.classList.toggle('sel')">
+        <div class="cp-box"><span class="cp-check">✓</span></div>
+        <div class="cp-text">Que dejen de perjudicarme y a otros consumidores.</div>
+      </div>
+
+      <button class="btn btn-green" onclick="irAServicio()" style="margin-top:22px;">
+        Quiero iniciar mi reclamo →
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ SERVICIO ══ -->
+  <div id="stepServicio" class="step">
+    <div class="card-body">
+      <div class="step-title">Así vamos a reclamar por vos</div>
+      <div class="step-desc" style="margin-top:8px;margin-bottom:18px;">
+        Nuestro equipo especializado en Defensa al Consumidor gestiona todo el reclamo. El servicio consta de
+        <strong>2 etapas y dura tan solo 5 días</strong>.
+      </div>
+
+      <div class="benefit">
+        <span class="bi">🔍</span>
+        <div class="bt">
+          <h4>Etapa 1 — Análisis e investigación</h4>
+          <p>Desde el momento en que dejás tu consulta <strong>ya estamos trabajando en tu caso</strong>: analizamos tu documentación y el inconveniente, y evaluamos la <strong>viabilidad del reclamo</strong> y la posibilidad de incluir un resarcimiento por los daños que estás sufriendo.</p>
+        </div>
+      </div>
+      <div class="benefit">
+        <span class="bi">📨</span>
+        <div class="bt">
+          <h4>Etapa 2 — Intimación y conciliación</h4>
+          <p>Determinada la viabilidad, iniciamos el reclamo para <strong>notificar y citar a la empresa denunciada</strong> a una reunión conciliatoria y que te den una solución urgente.</p>
+        </div>
+      </div>
+      <div class="benefit">
+        <span class="bi">💪</span>
+        <div class="bt">
+          <h4>Exigimos que se hagan cargo</h4>
+          <p>Si se verifican daños y perjuicios, reclamamos un <strong>resarcimiento económico</strong> por la pérdida de tiempo, salud y energía que te ocasionaron.</p>
+        </div>
+      </div>
+      <div class="benefit">
+        <span class="bi">🏠</span>
+        <div class="bt">
+          <h4>100% a distancia</h4>
+          <p>No tenés que trasladarte a ningún lado: gestionamos todo nuestro equipo y te mantenemos informado día a día.</p>
+        </div>
+      </div>
+
+      <div class="alert-box">
+        Generá tu legajo tocando <strong>"Quiero avanzar"</strong> para que nuestro equipo empiece a trabajar en tu reclamo.
+      </div>
+
+      <button class="btn btn-primary" onclick="irAPlan()" style="margin-top:16px;">Quiero avanzar →</button>
+    </div>
+  </div>
+
+  <!-- ══ PLAN / COSTO ══ -->
+  <div id="stepPlan" class="step">
+    <div class="card-body">
+
+      <div style="text-align:center;margin-bottom:18px;">
+        <div style="font-size:20px;font-weight:800;color:#111827;line-height:1.3;">
+          Hacé que <span id="planEmpresa" style="color:#DC2626;">la empresa</span> se haga cargo
+        </div>
+        <p style="font-size:13px;color:#6B7280;margin-top:6px;line-height:1.5;">
+          Estás a un paso de reclamar lo que es tuyo. Confirmá ahora y nuestro equipo <strong>empieza hoy mismo</strong> a trabajar en tu caso.
+        </p>
+      </div>
+
+      <div style="background:linear-gradient(135deg,#0D1B6E,#1A2FAD);border-radius:16px;padding:22px 18px;margin-bottom:14px;text-align:center;box-shadow:0 8px 24px rgba(13,27,110,.25);">
+        <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:1px;margin-bottom:7px;">Costos administrativos de la gestión</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.65);margin-bottom:2px;">2 cuotas de</div>
+        <div style="font-size:44px;font-weight:900;color:#fff;line-height:1;">$24.100</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.75);margin-top:8px;">IVA incluido · Total $48.200</div>
+        <div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.15);font-size:12px;color:rgba(255,255,255,.7);line-height:1.4;">
+          1ª cuota al contratar · 2ª cuota al finalizar la gestión inicial
+        </div>
+      </div>
+
+      <div style="background:#F0FDF4;border:1.5px solid #86EFAC;border-radius:12px;padding:13px 15px;margin-bottom:18px;">
+        <div style="font-size:12.5px;color:#15803D;line-height:1.6;">
+          💡 Son los <strong>costos mínimos</strong> para llevar adelante la gestión — gastos en los que estás incurriendo <strong>por culpa de la empresa</strong>. Por eso los <strong>incluimos en el reclamo</strong> para exigir que te los reintegren.
+        </div>
+      </div>
+
+      <div style="font-size:12px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Qué incluye tu gestión</div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">
+        <div style="display:flex;align-items:flex-start;gap:10px;">
+          <span style="font-size:17px;flex-shrink:0;">🚀</span>
+          <div style="font-size:13px;color:#374151;line-height:1.5;"><strong>Inicio inmediato</strong> — al confirmar, arrancamos el análisis e investigación de tu caso el mismo día.</div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:10px;">
+          <span style="font-size:17px;flex-shrink:0;">📬</span>
+          <div style="font-size:13px;color:#374151;line-height:1.5;"><strong>Reportes diarios</strong> — recibís las novedades de tu caso todos los días por <strong>email y WhatsApp</strong>. Asistencia personalizada antes, durante y después.</div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:10px;">
+          <span style="font-size:17px;flex-shrink:0;">📨</span>
+          <div style="font-size:13px;color:#374151;line-height:1.5;"><strong>Intimación y reunión conciliatoria</strong> — citamos a la empresa para que te dé una solución urgente.</div>
+        </div>
+      </div>
+
+      <div style="background:#FFF7ED;border:1.5px solid #FED7AA;border-radius:12px;padding:14px 16px;margin-bottom:14px;">
+        <div style="font-size:12px;font-weight:700;color:#92400E;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;">⚖️ Tu reclamo tiene respaldo legal</div>
+        <div style="font-size:12.5px;color:#78350F;line-height:1.6;">
+          Trabajamos bajo las <strong>Leyes 24.240 y 26.361</strong> (Defensa del Consumidor), <strong>25.156</strong> (Defensa de la Competencia) y <strong>22.802</strong> (Lealtad Comercial). El alta del servicio se pacta conforme al <strong>Art. 1105 del Código Civil y Comercial</strong>.
+        </div>
+      </div>
+
+      <div style="background:#F8FAFC;border:1.5px solid #E2E8F0;border-radius:12px;padding:14px 16px;margin-bottom:20px;">
+        <div style="font-size:12px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;">🔎 Empresa verificable en ARCA</div>
+        <div style="font-size:12.5px;color:#6B7280;line-height:1.6;">
+          Somos <strong>Reclamo Legal Argentina</strong>, entidad inscripta y legalmente constituida. Podés verificarnos en ARCA (ex AFIP) con nuestro <strong>CUIT 30-71905445-1</strong>.
+        </div>
+      </div>
+
+      <div style="margin-bottom:20px;">
+        <div style="font-size:12px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;">❓ Preguntas frecuentes</div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">¿Por qué tengo que pagar si la culpa es de la empresa?<span class="faq-icon">+</span></button>
+          <div class="faq-a">Abonás únicamente los <strong>costos administrativos mínimos</strong> de la gestión. Son gastos en los que estás incurriendo por culpa de la empresa, por eso los <strong>incluimos dentro del reclamo</strong> para exigir que te los reintegren. Vos ponés una parte mínima, y después ellos deben responder por todo el perjuicio causado.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">¿En cuánto tiempo voy a tener resultados?<span class="faq-icon">+</span></button>
+          <div class="faq-a">El servicio dura tan solo <strong>5 días</strong>: apenas dejás tu consulta empezamos a analizar tu caso y, verificada la viabilidad, intimamos a la empresa a una <strong>reunión conciliatoria</strong>. Desde que queda notificada, la empresa está <strong>obligada a responder</strong>, y trabajamos para que te den una solución en esa instancia. Los plazos finales dependen de cada caso, pero desde el primer día ya estamos gestionando por vos.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">¿Ustedes son Defensa del Consumidor?<span class="faq-icon">+</span></button>
+          <div class="faq-a">No. Defensa del Consumidor es un organismo estatal que recibe reclamos. Nosotros <strong>intervenimos directamente</strong> para que la empresa se haga responsable del daño que te causó, buscando un resarcimiento económico real. Si lo querés, además te informamos cómo hacer la denuncia ante Defensa del Consumidor.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">¿Tengo que ir a algún lado o presentar papeles?<span class="faq-icon">+</span></button>
+          <div class="faq-a">No tenés que trasladarte a ningún lado. Todo el proceso, incluidas las reuniones conciliatorias, se realiza de forma <strong>100% virtual</strong> y lo gestiona íntegramente nuestro equipo. Solo te pediremos documentación si es necesaria, y te mantenemos informado en cada paso.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">¿Qué pasa si la empresa no responde?<span class="faq-icon">+</span></button>
+          <div class="faq-a">Una vez notificada, la empresa queda <strong>obligada legalmente a responder</strong>. Si no lo hace, se expone a las sanciones que establece la Ley de Defensa del Consumidor. Nuestro objetivo es que te den una solución en la reunión conciliatoria.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">¿Cómo sé que esto es real y seguro?<span class="faq-icon">+</span></button>
+          <div class="faq-a">Somos <strong>Reclamo Legal Argentina</strong>, con CUIT <strong>30-71905445-1</strong> verificable en ARCA. Antes de que abones te enviamos todas las seguridades legales: nuestro teléfono, dirección física (Adolfo Alsina 1433, CABA), la normativa que te ampara y el nombre del analista a cargo de tu caso. Además recibís <strong>reportes diarios</strong> de tu gestión.</div>
+        </div>
+      </div>
+
+      <!-- captura de email si vino por skip sin email -->
+      <div id="panelEmailPlan" style="display:none;background:#EEF2FF;border-radius:12px;padding:16px;margin-bottom:16px;">
+        <p style="font-size:13px;color:#0D1B6E;font-weight:600;margin-bottom:10px;">📧 ¿A qué email te enviamos la información?</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <input type="email" id="emailPlan" placeholder="tu@email.com" style="flex:1;min-width:180px;">
+          <button onclick="confirmarEmailPlan()" style="padding:10px 18px;background:#0D1B6E;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;">Continuar →</button>
+        </div>
+      </div>
+
+      <button id="btnContratar" class="btn btn-green" onclick="irAPago()" style="font-size:16px;padding:16px;">
+        Contratar ahora →
+      </button>
+
+      <p style="font-size:10px;color:#9CA3AF;text-align:center;margin-top:12px;line-height:1.5;">
+        Al continuar aceptás nuestros <a href="#" onclick="abrirTC(event)" style="color:#6B7280;text-decoration:underline;">Términos y Condiciones y Aviso Legal</a>.
+        Reclamo Legal Argentina · CUIT 30-71905445-1 · Adolfo Alsina 1433, P4 Of B2, CABA.
+      </p>
+    </div>
+  </div>
+
+  <!-- ══ PAGO (confirmación + plan) ══ -->
+  <div id="stepPago" class="step">
+    <div class="card-body">
+
+      <div style="text-align:center;margin-bottom:20px;">
+        <div class="success-icon" style="margin-bottom:12px;">✅</div>
+        <div class="success-title">¡Ya abrimos tu legajo!</div>
+        <p style="font-size:13px;color:var(--muted);margin-top:6px;line-height:1.5;">
+          Tu expediente fue generado. <strong>Solo falta el pago inicial</strong> para que nuestro equipo arranque la Etapa 1.
+        </p>
+      </div>
+
+      <div class="success-items" style="margin-bottom:20px;">
+        <div class="si"><div class="si-check">✓</div>Expediente abierto en nuestro sistema</div>
+        <div class="si"><div class="si-check">✓</div>Información y contrato enviados a tu email</div>
+        <div class="si"><div class="si-check">✓</div>Analista asignado a tu caso</div>
+        <div class="si"><div class="si-check">✓</div>Duración estimada: 5 días</div>
+      </div>
+
+      <hr class="divider">
+
+      <div class="step-title" style="font-size:15px;margin-bottom:4px;">Tu plan de pago</div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">Costos administrativos: <strong>$48.200 total</strong> · IVA incluido</p>
+
+      <div class="plan sel" id="plan2c" onclick="selPlan(2, 24100)">
+        <div class="plan-title">2 cuotas</div>
+        <div class="plan-price">$24.100 <span>/ cuota</span></div>
+        <div class="plan-desc">1ª cuota al contratar · 2ª al finalizar la gestión inicial</div>
+      </div>
+
+      <button class="btn btn-primary" onclick="irAFecha()" style="margin-top:20px;">Continuar →</button>
+    </div>
+  </div>
+
+  <!-- ══ FECHA Y PAGO ══ -->
+  <div id="stepFecha" class="step">
+    <div class="card-body">
+      <div class="step-title" style="font-size:16px;">¿Cuándo realizás el pago?</div>
+      <p style="font-size:13px;color:var(--muted);margin:4px 0 14px;">Seleccioná la fecha del pago inicial.</p>
+
+      <div class="date-opt sel" id="dOpc1" onclick="selFecha('dOpc1')">
+        <div><div class="do-label">Hoy</div><div class="do-sub" id="lblOpc1"></div></div>
+        <div class="do-check sel" id="chkOpc1">✓</div>
+      </div>
+      <div class="date-opt" id="dOpc2" onclick="selFecha('dOpc2')">
+        <div><div class="do-label">Mañana</div><div class="do-sub" id="lblOpc2"></div></div>
+        <div class="do-check" id="chkOpc2"></div>
+      </div>
+      <div class="date-opt" id="dOpc3" onclick="selFecha('dOpc3')">
+        <div><div class="do-label">En 3 días</div><div class="do-sub" id="lblOpc3"></div></div>
+        <div class="do-check" id="chkOpc3"></div>
+      </div>
+
+      <hr class="divider">
+
+      <div class="sum-box">
+        <div class="sum-row"><span class="sl">Servicio</span>   <span class="sv">Gestión de reclamo</span></div>
+        <div class="sum-row"><span class="sl">Empresa</span>    <span class="sv" id="resumenEmpresa">—</span></div>
+        <div class="sum-row"><span class="sl">Plan</span>       <span class="sv" id="resumenPlan"></span></div>
+        <div class="sum-row"><span class="sl">Monto</span>      <span class="sv" id="resumenMonto"></span></div>
+        <div class="sum-row"><span class="sl">Fecha pago</span> <span class="sv" id="resumenFecha"></span></div>
+      </div>
+
+      <div class="trust-row">
+        <div class="ti"><div class="ti-icon">🔒</div><div class="ti-label">Pago<br>Seguro</div></div>
+        <div class="ti"><div class="ti-icon">🛡️</div><div class="ti-label">Datos<br>Protegidos</div></div>
+        <div class="ti"><div class="ti-icon">✅</div><div class="ti-label">CUIT<br>Verificable</div></div>
+        <div class="ti"><div class="ti-icon">⚖️</div><div class="ti-label">Ley<br>24.240</div></div>
+        <div class="ti"><div class="ti-icon">📬</div><div class="ti-label">Reportes<br>diarios</div></div>
+      </div>
+
+      <div class="sec-label">Medios de pago</div>
+
+      <button class="btn btn-primary" onclick="pagarTarjeta()" style="margin-top:4px;margin-bottom:8px;">
+        💳 Pagar con tarjeta o efectivo (online)
+      </button>
+      <button class="btn" onclick="mostrarCBU()" style="background:#1a3c5e;color:#fff;margin-bottom:0;">
+        🏦 Transferencia bancaria (CBU)
+      </button>
+
+      <!-- Panel CBU -->
+      <div id="panelCBU" style="display:none;margin-top:16px;background:#f0f7ff;border:1.5px solid #2563eb33;border-radius:12px;padding:16px;">
+        <div style="font-weight:700;font-size:14px;color:#1a3c5e;margin-bottom:12px;">📋 Datos para la transferencia</div>
+
+        <div style="margin-bottom:10px;">
+          <div style="font-size:11px;color:#64748b;margin-bottom:3px;">CBU</div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span id="txtCBU" style="font-family:monospace;font-size:13.5px;font-weight:600;letter-spacing:.5px;color:#0f172a;">0070016020000011656308</span>
+            <button onclick="copiar('txtCBU','btnCopCBU')" id="btnCopCBU" class="btn-copy">Copiar</button>
+          </div>
+        </div>
+        <div style="margin-bottom:10px;">
+          <div style="font-size:11px;color:#64748b;margin-bottom:3px;">Alias</div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span id="txtAlias" style="font-size:14px;font-weight:600;color:#0f172a;">MANTENIA.ASADO.FOCO</span>
+            <button onclick="copiar('txtAlias','btnCopAlias')" id="btnCopAlias" class="btn-copy">Copiar</button>
+          </div>
+        </div>
+
+        <div style="font-size:12px;color:#475569;line-height:1.8;border-top:1px solid #cbd5e133;padding-top:10px;margin-top:4px;">
+          <div><strong>Destinatario:</strong> RED ALIANZA</div>
+          <div><strong>CUIT:</strong> 30-71905445-1</div>
+          <div style="margin-top:6px;"><strong>Monto:</strong> <span id="cbuMonto" style="color:#16a34a;font-weight:700;"></span></div>
+        </div>
+
+        <button onclick="confirmarCBU()" style="margin-top:14px;width:100%;padding:13px;background:#25D366;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;">
+          ✅ Ya transferí → Enviar comprobante por WhatsApp
+        </button>
+        <p style="font-size:11px;color:#64748b;text-align:center;margin:8px 0 0;">Enviá el comprobante por WhatsApp para darle prioridad a tu gestión.</p>
+      </div>
+
+      <p class="disclaimer" style="margin-top:12px;">Al abonar, enviá el comprobante por WhatsApp o a gestiones@reclamosyquejas.com.</p>
+    </div>
+  </div>
+
+  <!-- ══ ÉXITO ══ -->
+  <div id="stepExito" class="step">
+    <div class="card-body">
+      <div class="success-icon">✅</div>
+      <div class="success-title">¡Ya estamos trabajando en tu reclamo!</div>
+      <div id="successSub" class="success-sub">Enviá el comprobante de pago para que le demos prioridad a tu gestión.</div>
+
+      <div id="panelEmailContrato" style="display:none;margin-top:16px;background:#EEF2FF;border-radius:10px;padding:16px;text-align:left;">
+        <p style="font-size:13px;color:#0D1B6E;font-weight:600;margin-bottom:10px;">¿Querés recibir la info de tu reclamo por email?</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <input type="email" id="emailContrato" placeholder="tu@email.com" style="flex:1;min-width:180px;">
+          <button id="btnEnviarContrato" onclick="enviarContratoCapturado()" style="padding:10px 18px;background:#0D1B6E;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;">Enviar</button>
+        </div>
+      </div>
+
+      <div class="success-items">
+        <div class="si"><div class="si-check">✓</div>Expediente abierto en nuestro sistema</div>
+        <div class="si"><div class="si-check">✓</div>Información enviada por email</div>
+        <div class="si"><div class="si-check">✓</div>Analista asignado a tu caso</div>
+        <div class="si"><div class="si-check">✓</div>Etapa 1 en marcha — duración estimada 5 días</div>
+      </div>
+
+      <a id="btnWaFinal" href="#" class="btn-wa">
+        <svg width="20" height="20" viewBox="0 0 32 32" fill="white" xmlns="http://www.w3.org/2000/svg">
           <path d="M16 3C9.373 3 4 8.373 4 15c0 2.385.832 4.584 2.196 6.354L4 29l7.834-2.17A12.94 12.94 0 0016 28c6.627 0 12-5.373 12-12S22.627 3 16 3zm6.406 16.656c-.275.77-1.593 1.473-2.187 1.563-.556.084-1.26.12-2.032-.127a18.63 18.63 0 01-1.839-.68C14.01 19.44 11.8 17.18 11.07 16.18c-.73-1-1.193-2.108-1.193-3.217 0-1.11.49-1.65.678-1.875.187-.224.41-.28.547-.28l.39.007c.125.005.293-.048.458.35.175.42.592 1.45.644 1.556.053.105.088.228.018.366-.07.14-.105.225-.21.347-.105.12-.22.269-.314.362-.105.1-.215.21-.093.41.125.2.556.918 1.194 1.487.82.732 1.51 1.006 1.72 1.12.21.11.333.092.456-.056.125-.148.533-.623.676-.837.143-.215.285-.18.48-.108.193.072 1.225.578 1.437.683.21.104.35.156.4.242.052.085.052.49-.223 1.26z"/>
         </svg>
-        Escribinos para iniciar el reclamo
+        Enviar comprobante / Hablar con mi asesor
       </a>
-      <p class="disclaimer" style="margin-top:14px;">
-        gestiones@reclamosyquejas.com · RED ALIANZA S.R.L. · iniciatureclamo.com.ar
+      <p class="disclaimer" style="margin-top:12px;">
+        gestiones@reclamosyquejas.com · Reclamo Legal Argentina · CUIT 30-71905445-1
       </p>
-
     </div>
   </div>
 
 </div><!-- /card -->
 
+<!-- ══ PRE-PROMPT NOTIFICACIONES ══ -->
+<div class="np-overlay" id="prePrompt">
+  <div class="np-card">
+    <div class="np-ic">🔔</div>
+    <div class="np-t">Activá los avisos de tu reclamo</div>
+    <div class="np-d">Te avisamos por notificación en tu celular las novedades de tu caso. Es gratis y lo desactivás cuando quieras.</div>
+    <button class="btn btn-primary" onclick="prePromptSi()" style="margin-top:2px;">🔔 Sí, activar avisos</button>
+    <button class="btn btn-ghost" onclick="prePromptNo()">Ahora no</button>
+  </div>
+</div>
+
+<!-- ══ MODAL TÉRMINOS Y CONDICIONES ══ -->
+<div class="modal-overlay" id="modalTC" onclick="cerrarTC(event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Términos, Condiciones y Aviso Legal</h3>
+      <button class="modal-close" onclick="document.getElementById('modalTC').classList.remove('open')">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <h4>ALTA DEL SERVICIO</h4>
+      <p>De acuerdo al alta del servicio pactado telefónicamente (conf. Art. 1105 del Código Civil y Comercial), nuestro equipo especializado en normas de protección y defensa de las y los consumidores, en base a las <strong>Leyes 24.240, 26.361, 25.156 y 22.802</strong>, analizará e investigará los distintos cursos de acción para que la empresa denunciada brinde una solución urgente a tu reclamo. Además, de verificarse daños y perjuicios, exigir un <strong>resarcimiento económico</strong> por la pérdida de tiempo, salud y energía padecida.</p>
+
+      <h4>ALCANCES DEL SERVICIO</h4>
+      <p>El servicio básico consta de 2 etapas cuyo plazo de duración es de tan solo 5 días.</p>
+      <p><strong>Etapa 1:</strong> con el pago inicial se analizará la documentación e información relacionada al inconveniente, considerando la situación que dio origen y la posibilidad de incluir resarcimiento por los daños sufridos.</p>
+      <p><strong>Etapa 2:</strong> determinada la viabilidad del reclamo, con el segundo pago se iniciará el reclamo para notificar y citar a la empresa denunciada a una reunión conciliatoria.</p>
+
+      <h4>COSTO DEL SERVICIO</h4>
+      <p>El servicio presupuestado consiste en una suma única y fija dividida en dos veces para facilitar el abono: una cuota inicial de <strong>$24.100</strong> y la última del mismo valor finalizando la gestión inicial (total $48.200).</p>
+
+      <h4>IMPORTANTE</h4>
+      <p>El compromiso y la transparencia son pilares fundamentales para nuestro equipo, por tal razón te informamos:</p>
+      <ol type="a">
+        <li>No se garantiza el éxito del reclamo; su resolución quedará supeditada a que la empresa denunciada realice un ofrecimiento y que el mismo sea satisfactorio para el cliente.</li>
+        <li>No se brinda asesoramiento jurídico en las dos etapas; sólo en caso de decidir la asistencia de un abogado se recibirá el correspondiente asesoramiento jurídico por parte del mismo.</li>
+        <li>Es obligación del cliente brindar la información personal requerida, dentro de la cual debe estar su disponibilidad para asistir a la audiencia.</li>
+        <li>Brindar toda la documentación / información respecto del caso.</li>
+        <li>Presentarse a la/s reunión/es conciliatoria/s que se designe/n.</li>
+        <li>Se le informará cómo proceder a realizar la denuncia ante Defensa del Consumidor si así lo desea.</li>
+      </ol>
+
+      <h4>SEGURIDADES Y GARANTÍAS LEGALES</h4>
+      <p>Nuestra estructura de trabajo te permitirá conocer en todo momento las novedades sobre tu caso a través de reportes diarios. Recibirás asistencia personalizada en forma previa, durante y posterior a la gestión, por el tiempo que nos necesites, para consultas, sugerencias y/o consejos.</p>
+
+      <h4>AVISO LEGAL</h4>
+      <p>Para tu total seguridad, garantía y tranquilidad, ponemos a tu disposición los derechos que tenés como cliente y consumidor de nuestro servicio. Podés verificar en ARCA (ex AFIP) que somos una entidad inscripta y legalmente constituida mediante nuestro CUIT. Más detalles en los términos y condiciones de nuestra web: <strong>reclamolegal.com/terminos-y-condiciones</strong></p>
+
+      <p style="margin-top:14px;"><strong>RECLAMO LEGAL ARGENTINA</strong><br>reclamolegal.com<br>Adolfo Alsina 1433, Piso 4, Of. B2 — Ciudad Autónoma de Buenos Aires<br>CUIT 30-71905445-1<br>gestiones@reclamosyquejas.com</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" onclick="document.getElementById('modalTC').classList.remove('open')" style="margin-top:0;">Entendido</button>
+    </div>
+  </div>
+</div>
+
 <script>
   // ── CONFIG ────────────────────────────────────────────────────────────────
-  const GAS_URL    = 'https://script.google.com/macros/s/AKfycbyONraCdJ5eYLD3Yo2fZchJ2oMnm-4NmaJ9GK5ebdSb7mYePcZRsbnakpfYkeUpg82M/exec';
-  const WA_DEFAULT = '5491179041924';
+  const WA_DEFAULT  = '5491164027360';                             // WhatsApp central (comprobantes/derivación)
+  const LINK_PAGO   = 'http://zenlink.zenrise.io/?hash=15vWrWyRlB'; // tarjeta o efectivo (mismo link, el cliente elige)
+  const MAIL        = 'gestiones@reclamosyquejas.com';
+  const GAS_TRACKING = 'https://script.google.com/macros/s/AKfycbyONraCdJ5eYLD3Yo2fZchJ2oMnm-4NmaJ9GK5ebdSb7mYePcZRsbnakpfYkeUpg82M/exec';
+  const PUSH_ON      = false;  // Fase 2: notificaciones push (requiere backend /api/*). Falso = no muestra el cartel.
+
+  const CUOTA = 24100, TOTAL = 48200;
 
   const params    = new URLSearchParams(window.location.search);
-  const WA_NUMBER = params.get('wa') || WA_DEFAULT;
+  let   WA_NUMBER = params.get('wa') || WA_DEFAULT;
 
-  let datos = { empresa: '', motivo: '', monto: '', solucion: '', descripcion: '', nombre: '', telefono: '', dni: '', email: '', leadId: '' };
-
-  function generarLeadId_() {
-    return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+  // leadId estable por sesión → una sola fila por lead en el embudo (upsert en el GAS)
+  let LEAD_ID = '';
+  try { LEAD_ID = localStorage.getItem('rl_leadId') || ''; } catch (e) {}
+  if (!LEAD_ID) {
+    LEAD_ID = 'RL-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8);
+    try { localStorage.setItem('rl_leadId', LEAD_ID); } catch (e) {}
   }
 
-  // ── PASO 1 → PASO 2 ────────────────────────────────────────────────────────
-  function irAPaso2() {
+  let datos = { nombre:'', dni:'', email:'', telefono:'', empresa:'', motivo:'', monto:0, solucion:'', descripcion:'', checkpoints:'', metodoPago:'' };
+  let plan  = { cuotas: 2, monto: CUOTA };
+  let fechaSel = '';
+  let viaSkip = false;
+
+  // ── Resarcimiento estimado ────────────────────────────────────────────────
+  // Regla del negocio: monto < $100.000 → se reclama $300.000; si es mayor → el triple.
+  function calcResarcimiento(m) {
+    m = Number(m) || 0;
+    return m < 100000 ? 300000 : m * 3;
+  }
+  function fmtPesos(n) { return '$' + (Number(n)||0).toLocaleString('es-AR'); }
+
+  // ── NOTIFICACIONES PUSH (sistema propio) ──────────────────────────────────
+  let VAPID_PUBLIC = '';
+  if (PUSH_ON) (async () => {
+    try { const r = await fetch('/api/config-publica'); VAPID_PUBLIC = (await r.json()).vapid_public || ''; }
+    catch (e) { /* servido fuera de nuestro backend: sin push */ }
+  })();
+  function b64ToUint8(base64) {
+    const pad = '='.repeat((4 - base64.length % 4) % 4);
+    const raw = atob((base64 + pad).replace(/-/g, '+').replace(/_/g, '/'));
+    return Uint8Array.from([...raw].map(c => c.charCodeAt(0)));
+  }
+  async function activarNotificaciones() {
+    try {
+      if (!('serviceWorker' in navigator) || !('PushManager' in window) || !VAPID_PUBLIC) return;
+      if (Notification.permission === 'denied') return;
+      const perm = await Notification.requestPermission();
+      if (perm !== 'granted') return;
+      const reg = await navigator.serviceWorker.register('/sw.js');
+      await navigator.serviceWorker.ready;
+      let sub = await reg.pushManager.getSubscription();
+      if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToUint8(VAPID_PUBLIC) });
+      await fetch('/api/suscribir', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ dni: datos.dni||'', nombre: datos.nombre||'', telefono: datos.telefono||'', dispositivo: navigator.userAgent.slice(0,120), sub: sub.toJSON() }),
+      });
+    } catch (e) { /* silencioso */ }
+  }
+  function pedirPermisoConCartel() {
+    const ok = ('serviceWorker' in navigator) && ('PushManager' in window) && (typeof Notification !== 'undefined');
+    if (ok && Notification.permission === 'default') document.getElementById('prePrompt').classList.add('open');
+    else activarNotificaciones();
+  }
+  function prePromptSi() { document.getElementById('prePrompt').classList.remove('open'); activarNotificaciones(); }
+  function prePromptNo() { document.getElementById('prePrompt').classList.remove('open'); }
+
+  // Marca al cliente como contratado en el panel (backend). Nunca corta el embudo.
+  let contratoAvisado = false;
+  function avisarContrato() {
+    try {
+      if (!datos.dni || contratoAvisado) return;
+      contratoAvisado = true;
+      fetch('/api/contrato', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ dni: datos.dni, nombre: datos.nombre||'', telefono: datos.telefono||'' }),
+      }).catch(() => {});
+    } catch (e) {}
+  }
+
+  // ── Modo skip (links de operador que prellenan y saltan al servicio) ───────
+  if (params.get('skip') === '1') {
+    datos.nombre   = decodeURIComponent(params.get('nombre') || '');
+    datos.telefono = params.get('tel')   || '';
+    datos.email    = decodeURIComponent(params.get('email') || '');
+    datos.dni      = params.get('dni')   || '';
+    datos.empresa  = decodeURIComponent(params.get('empresa') || '');
+    datos.monto    = Number(params.get('monto')) || 0;
+    viaSkip = true;
+    document.addEventListener('DOMContentLoaded', () => { showStep('stepServicio'); setLabel(3, 'Paso 3 — Conocé el servicio', 45); });
+  }
+
+  // ── Fechas ────────────────────────────────────────────────────────────────
+  function addDias(d, n) { const r = new Date(d); r.setDate(r.getDate() + n); return r; }
+  function addHabiles(d, n) { const r = new Date(d); let c = 0; while (c < n) { r.setDate(r.getDate()+1); if (r.getDay()!==0 && r.getDay()!==6) c++; } return r; }
+  function fmtFecha(d) { return d.toLocaleDateString('es-AR', { weekday:'long', day:'numeric', month:'long' }); }
+  function initFechas() {
+    const hoy = new Date();
+    document.getElementById('lblOpc1').textContent = fmtFecha(hoy);
+    document.getElementById('lblOpc2').textContent = fmtFecha(addDias(hoy, 1));
+    document.getElementById('lblOpc3').textContent = fmtFecha(addHabiles(hoy, 3));
+    fechaSel = fmtFecha(hoy);
+  }
+  function selFecha(id) {
+    ['dOpc1','dOpc2','dOpc3'].forEach(x => {
+      document.getElementById(x).classList.remove('sel');
+      const chk = document.getElementById('chk' + x.slice(1)); if (chk) { chk.classList.remove('sel'); chk.textContent = ''; }
+    });
+    document.getElementById(id).classList.add('sel');
+    const chk = document.getElementById('chk' + id.slice(1)); if (chk) { chk.classList.add('sel'); chk.textContent = '✓'; }
+    fechaSel = document.getElementById('lbl' + id.slice(1)).textContent;
+    actualizarResumen();
+  }
+  function selPlan(cuotas, monto) {
+    plan = { cuotas, monto };
+    const p2 = document.getElementById('plan2c'); if (p2) p2.classList.toggle('sel', cuotas === 2);
+    const p1 = document.getElementById('plan1c'); if (p1) p1.classList.toggle('sel', cuotas === 1);
+    actualizarResumen();
+  }
+  function actualizarResumen() {
+    const g = id => document.getElementById(id);
+    if (g('resumenEmpresa')) g('resumenEmpresa').textContent = datos.empresa || '—';
+    if (g('resumenPlan'))  g('resumenPlan').textContent  = plan.cuotas === 1 ? '1 pago' : '2 cuotas';
+    if (g('resumenMonto')) g('resumenMonto').textContent = fmtPesos(plan.monto) + (plan.cuotas === 2 ? ' / cuota' : ' único');
+    if (g('resumenFecha')) g('resumenFecha').textContent = fechaSel;
+  }
+
+  // ── Pasos: sondeo → datos ─────────────────────────────────────────────────
+  function irADatos() {
     const empresa     = document.getElementById('empresa').value.trim();
     const motivo      = document.getElementById('motivo').value;
-    const monto       = document.getElementById('monto').value.trim().replace(/\./g, '').replace(/,/g, '');
+    const montoRaw    = document.getElementById('monto').value.replace(/[^\d]/g,'');
     const solucion    = document.getElementById('solucion').value;
     const descripcion = document.getElementById('descripcion').value.trim();
-
-    const montoInv = !/^\d+$/.test(monto);
-
-    setErr('empresa',     empresa.length < 2,      'err-empresa');
-    setErr('motivo',      !motivo,                 'err-motivo');
-    setErr('monto',       montoInv,                'err-monto');
-    setErr('solucion',    !solucion,               'err-solucion');
-    setErr('descripcion', descripcion.length < 20, 'err-descripcion');
-
-    if (!valid('empresa') || !valid('motivo') || montoInv || !valid('solucion') || !valid('descripcion')) return;
-
-    datos.empresa     = empresa;
-    datos.motivo      = motivo;
-    datos.monto       = monto;
-    datos.solucion    = solucion;
-    datos.descripcion = descripcion;
-    if (!datos.leadId) datos.leadId = generarLeadId_();
-
-    // Enviar lead parcial al GAS apenas termina el paso 1 (fire & forget, no-cors)
-    fetch(GAS_URL, {
-      method: 'POST', mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({ ...datos, waNumero: WA_NUMBER }),
-    }).catch(() => {});
-
+    setErr('empresa',     empresa.length < 2,        'err-empresa');
+    setErr('motivo',      !motivo,                   'err-motivo');
+    setErr('monto',       !montoRaw || +montoRaw<=0, 'err-monto');
+    setErr('solucion',    !solucion,                 'err-solucion');
+    setErr('descripcion', descripcion.length < 20,   'err-descripcion');
+    if (!valid('empresa')||!valid('motivo')||!valid('monto')||!valid('solucion')||!valid('descripcion')) return;
+    datos.empresa = empresa; datos.motivo = motivo; datos.monto = +montoRaw;
+    datos.solucion = solucion; datos.descripcion = descripcion;
+    trackFunnel('1_sondeo');
     showStep('step2');
-    setLabel(2, 'Paso 2 — Tus datos de contacto', 50);
+    setLabel(2, 'Paso 2 — Tus datos', 28);
   }
+  function volverAPaso1() { showStep('step1'); setLabel(1, 'Paso 1 — Datos del reclamo', 12); }
 
-  function volverAPaso1() {
-    showStep('step1');
-    setLabel(1, 'Paso 1 — Datos del reclamo', 16);
-  }
-
-  // ── PASO 2 → LOADING → RESULTADO ─────────────────────────────────────────
-  function enviarYMostrarResultado() {
+  function analizarCaso() {
     const nombre   = document.getElementById('nombre').value.trim();
-    const telefono = document.getElementById('telefono').value.trim().replace(/[\s\-\+\(\)]/g, '');
-    const dni      = document.getElementById('dni').value.trim().replace(/\./g, '');
+    const dni      = document.getElementById('dni').value.trim().replace(/\./g,'');
+    const telefono = document.getElementById('telefono').value.trim();
     const email    = document.getElementById('email').value.trim();
+    setErr('nombre',   nombre.length < 3,                                       'err-nombre');
+    setErr('dni',      !/^\d{7,8}$/.test(dni),                                  'err-dni');
+    setErr('telefono', !/^\d{10}$/.test(telefono.replace(/[\s\-\+\(\)]/g,'')),  'err-telefono');
+    const _emailErr = emailProblema(email);
+    if (_emailErr) document.getElementById('err-email').textContent = _emailErr;
+    setErr('email',    !!_emailErr,                                             'err-email');
+    if (!valid('nombre')||!valid('dni')||!valid('telefono')||!valid('email')) return;
+    datos.nombre = nombre; datos.dni = dni; datos.telefono = telefono; datos.email = email;
 
-    setErr('nombre',   nombre.length < 3,                         'err-nombre');
-    setErr('telefono', !/^\d{10}$/.test(telefono),                'err-telefono');
-    setErr('dni',      !/^\d{7,8}$/.test(dni),                    'err-dni');
-    setErr('email',    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email), 'err-email');
-    if (!valid('nombre') || !valid('telefono') || !valid('dni') || !valid('email')) return;
-
-    datos.nombre   = nombre;
-    datos.telefono = telefono;
-    datos.dni      = dni;
-    datos.email    = email;
+    if (PUSH_ON) pedirPermisoConCartel();
+    trackFunnel('2_datos');
 
     document.getElementById('stepLabel').style.opacity = '0';
     showStep('stepLoading');
-
     ['ls1','ls2','ls3','ls4'].forEach((id, i) => {
       setTimeout(() => {
         document.getElementById(id).classList.add('show');
         if (i > 0) document.getElementById('ls' + i).classList.add('done');
-      }, i * 900 + 300);
+      }, i * 900 + 400);
     });
-
-    // Enviar lead al GAS (fire & forget, no-cors)
-    fetch(GAS_URL, {
-      method: 'POST', mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({ ...datos, waNumero: WA_NUMBER }),
-    }).catch(() => {});
-
-    setTimeout(mostrarResultado, 4200);
+    setTimeout(mostrarResultado, 4600);
+  }
+  function mostrarResultado() { trackFunnel('3_resultado'); renderResultado(); }
+  function renderResultado() {
+    document.getElementById('stepLabel').style.display = 'none';
+    showStep('stepResult');
+    const est = calcResarcimiento(datos.monto);
+    document.getElementById('resultMsg').innerHTML =
+      `Hola <strong>${datos.nombre || ''}</strong>, analizamos tu caso contra <strong>${datos.empresa || 'la empresa'}</strong>.
+       Según la <strong>Ley 24.240</strong> de Defensa del Consumidor, tenés derecho a reclamar una solución y un resarcimiento económico.`;
+    document.getElementById('resarcMonto').textContent = 'hasta ' + fmtPesos(est);
   }
 
-  function mostrarResultado() {
+  // ── Pasos: adhesión ───────────────────────────────────────────────────────
+  function irAServicio() {
+    const labels = { cp1:'Recuperar dinero', cp2:'Indemnización', cp3:'Que se hagan cargo', cp4:'Frenar el perjuicio' };
+    datos.checkpoints = ['cp1','cp2','cp3','cp4']
+      .filter(id => document.getElementById(id).classList.contains('sel'))
+      .map(id => labels[id]).join(' | ') || 'Ninguno';
+    trackFunnel('4_servicio');
+    showStep('stepServicio');
+    setLabel(3, 'Paso 3 — Conocé el servicio', 45);
+  }
+  function irAPlan() {
+    if (viaSkip) { trackFunnel('4_servicio'); viaSkip = false; }
+    const pe = document.getElementById('planEmpresa'); if (pe) pe.textContent = datos.empresa || 'la empresa';
+    initFechas();
+    showStep('stepPlan');
+    setLabel(4, 'Paso 4 — Activá tu reclamo', 60);
+  }
+  function confirmarEmailPlan() {
+    const e = document.getElementById('emailPlan').value.trim();
+    const prob = emailProblema(e);
+    if (prob) { alert(prob + '.'); return; }
+    datos.email = e;
+    document.getElementById('panelEmailPlan').style.display = 'none';
+  }
+  function irAPago() {
+    trackFunnel('5_confirmacion');
+    enviarContrato();
+    if (PUSH_ON) avisarContrato();
+    showStep('stepPago');
+    setLabel(5, 'Paso 5 — Elegí cómo abonar', 78);
+  }
+  function irAFecha() {
+    initFechas();
+    trackFunnel('6_fecha');
+    showStep('stepFecha');
+    setLabel(6, 'Paso 6 — Fecha y pago', 90);
+    actualizarResumen();
+  }
+
+  function pagarTarjeta() {
+    datos.metodoPago = 'Tarjeta/Efectivo (online)';
+    trackPago(datos.metodoPago);
+    window.open(LINK_PAGO, '_blank');
+    mostrarExito();
+  }
+  function mostrarCBU() {
+    document.getElementById('panelCBU').style.display = 'block';
+    const montoStr = plan.cuotas === 2 ? `${fmtPesos(plan.monto)} (1ª cuota)` : `${fmtPesos(plan.monto)} (pago único)`;
+    document.getElementById('cbuMonto').textContent = montoStr;
+    document.getElementById('panelCBU').scrollIntoView({ behavior:'smooth', block:'start' });
+  }
+  function copiar(spanId, btnId) {
+    const text = document.getElementById(spanId).textContent.trim();
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById(btnId);
+      btn.textContent = '¡Copiado!'; btn.classList.add('ok');
+      setTimeout(() => { btn.textContent = 'Copiar'; btn.classList.remove('ok'); }, 2000);
+    });
+  }
+  function confirmarCBU() {
+    datos.metodoPago = 'Transferencia CBU';
+    trackPago('Transferencia CBU');
+    const montoStr = plan.cuotas === 2 ? `1ª cuota de ${fmtPesos(plan.monto)}` : `pago único de ${fmtPesos(plan.monto)}`;
+    const msg = encodeURIComponent(`Hola! Realicé la transferencia para iniciar mi reclamo contra ${datos.empresa}.\nNombre: ${datos.nombre}\nDNI: ${datos.dni}\nMonto: ${montoStr}\n\nAdjunto el comprobante.`);
+    window.open(`https://wa.me/${WA_NUMBER}?text=${msg}`, '_blank');
+    mostrarExito();
+  }
+
+  // Detecta typos de dominio (gamil, gemeil, hotmial, etc.) por distancia de edición.
+  const DOMINIOS_OK = ['gmail.com','hotmail.com','outlook.com','yahoo.com','yahoo.com.ar',
+    'hotmail.com.ar','outlook.com.ar','hotmail.es','outlook.es','live.com','live.com.ar',
+    'icloud.com','me.com','proton.me','protonmail.com','yahoo.es','yahoo.com.mx'];
+  function _lev(a, b) {
+    const m = a.length, n = b.length, dp = [];
+    for (let i = 0; i <= m; i++) { dp[i] = [i]; for (let j = 1; j <= n; j++) dp[i][j] = i === 0 ? j : 0; }
+    for (let i = 1; i <= m; i++) for (let j = 1; j <= n; j++)
+      dp[i][j] = Math.min(dp[i-1][j] + 1, dp[i][j-1] + 1, dp[i-1][j-1] + (a[i-1] === b[j-1] ? 0 : 1));
+    return dp[m][n];
+  }
+  // Devuelve null si el email está OK, o un mensaje de error para mostrar.
+  function emailProblema(email) {
+    email = (email || '').trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'Ingresá un email válido';
+    const dom = email.split('@')[1];
+    if (DOMINIOS_OK.indexOf(dom) > -1) return null;
+    let best = null, bd = 99;
+    for (const d of DOMINIOS_OK) { const k = _lev(dom, d); if (k < bd) { bd = k; best = d; } }
+    if (bd > 0 && bd <= 2) return '¿Quisiste decir @' + best + '? Revisá tu email';
+    return null;  // dominio desconocido pero plausible (corporativo, etc.)
+  }
+
+  function emailEsValido(e) { return e && e.trim() && !/^xxx@/i.test(e) && e.includes('@') && !emailProblema(e); }
+  function mostrarExito() {
+    showStep('stepExito');
     document.getElementById('stepLabel').style.display = 'none';
     document.getElementById('progressBar').style.width = '100%';
-    showStep('stepResult');
-
-    document.getElementById('resultTitle').textContent =
-      `¡Tomamos tu reclamo, ${datos.nombre.split(' ')[0]}!`;
-    document.getElementById('resultSub').textContent =
-      `Analizamos tu caso contra ${datos.empresa} y tenemos muy buenas noticias.`;
-
-    const montoNum = parseInt(datos.monto, 10);
-    const recupero = Math.max(montoNum * 5, 300000);
-    const fmt      = n => '$' + n.toLocaleString('es-AR');
-
-    document.getElementById('resEmpresa').textContent  = datos.empresa;
-    document.getElementById('resMotivo').textContent   = datos.motivo;
-    document.getElementById('resMonto').textContent    = fmt(montoNum);
-    document.getElementById('resRecupero').textContent = 'hasta ' + fmt(recupero);
-
-    const msg = encodeURIComponent(
-      `Hola! Acabo de cargar mi reclamo contra ${datos.empresa} por ${datos.motivo}. ` +
-      `Monto reclamado: $${montoNum.toLocaleString('es-AR')}. ` +
-      `Solución buscada: ${datos.solucion}. ` +
-      `Soy ${datos.nombre}, DNI ${datos.dni}. Quiero iniciar la gestión.`
-    );
-    document.getElementById('btnWa').href = `https://wa.me/${WA_NUMBER}?text=${msg}`;
+    const msg = encodeURIComponent(`Hola! Acabo de iniciar mi reclamo contra ${datos.empresa}. Soy ${datos.nombre}, DNI ${datos.dni}. Te envío el comprobante de pago.`);
+    document.getElementById('btnWaFinal').href = `https://wa.me/${WA_NUMBER}?text=${msg}`;
+    if (emailEsValido(datos.email)) {
+      document.getElementById('successSub').textContent = 'Te enviamos la información a ' + datos.email + '. Enviá el comprobante de pago para darle prioridad a tu gestión.';
+      document.getElementById('panelEmailContrato').style.display = 'none';
+    } else {
+      document.getElementById('successSub').textContent = 'Ingresá tu email para recibir la información de tu reclamo.';
+      document.getElementById('panelEmailContrato').style.display = 'block';
+    }
+  }
+  function enviarContratoCapturado() {
+    const e = document.getElementById('emailContrato').value.trim();
+    const prob = emailProblema(e);
+    if (prob) { alert(prob + '.'); return; }
+    datos.email = e; enviarContrato();
+    document.getElementById('panelEmailContrato').style.display = 'none';
+    document.getElementById('successSub').textContent = 'Te enviamos la información a ' + e + '.';
+    const btn = document.getElementById('btnEnviarContrato'); btn.textContent = '✅ Enviado'; btn.disabled = true;
   }
 
-  // ── HELPERS ───────────────────────────────────────────────────────────────
+  // ── Tracking (no-op si GAS_TRACKING está vacío) ───────────────────────────
+  function trackFunnel(paso) { postGAS({ action:'track', paso }); }
+  function trackPago(metodo) { postGAS({ action:'track', paso:'7_pago', metodoPago: metodo }); }
+  function enviarContrato()  { postGAS({ action:'contrato', paso:'5_confirmacion' }); }
+  function postGAS(extra) {
+    if (!GAS_TRACKING) return;
+    fetch(GAS_TRACKING, {
+      method:'POST', mode:'no-cors', headers:{ 'Content-Type':'text/plain' },
+      body: JSON.stringify(Object.assign({
+        secret:'RLA_2026', leadId: LEAD_ID,
+        nombre: datos.nombre, dni: datos.dni, email: datos.email,
+        wa: datos.telefono||'', waOperador: WA_NUMBER,
+        empresa: datos.empresa, motivo: datos.motivo, monto: datos.monto,
+        solucion: datos.solucion, descripcion: datos.descripcion,
+        resarcimiento: calcResarcimiento(datos.monto),
+        cuotas: plan.cuotas, montoCuota: plan.monto, fechaPago: fechaSel,
+        checkpoints: datos.checkpoints||'',
+      }, extra)),
+    }).catch(() => {});
+  }
+
+  function toggleFaq(btn) {
+    const item = btn.parentElement;
+    const isOpen = item.classList.contains('faq-open');
+    document.querySelectorAll('.faq-item.faq-open').forEach(i => i.classList.remove('faq-open'));
+    if (!isOpen) item.classList.add('faq-open');
+  }
+
+  // ── Helpers ───────────────────────────────────────────────────────────────
   function showStep(id) {
     document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   function setLabel(num, texto, pct) {
     const sl = document.getElementById('stepLabel');
-    sl.style.display  = 'flex';
-    sl.style.opacity  = '1';
+    sl.style.display = 'flex'; sl.style.opacity = '1';
     document.getElementById('stepNum').textContent  = num;
     document.getElementById('stepText').textContent = texto;
     document.getElementById('progressBar').style.width = pct + '%';
   }
   function setErr(inputId, hasErr, errId) {
-    const el = document.getElementById(inputId);
-    if (el) el.classList.toggle('has-error', hasErr);
-    const er = document.getElementById(errId);
-    if (er) er.style.display = hasErr ? 'block' : 'none';
+    document.getElementById(inputId).classList.toggle('has-error', hasErr);
+    document.getElementById(errId).style.display = hasErr ? 'block' : 'none';
   }
-  function valid(id) {
-    const el = document.getElementById(id);
-    return el && !el.classList.contains('has-error');
-  }
+  function valid(id) { return !document.getElementById(id).classList.contains('has-error'); }
+  function abrirTC(e) { e.preventDefault(); document.getElementById('modalTC').classList.add('open'); }
+  function cerrarTC(e) { if (e.target === document.getElementById('modalTC')) document.getElementById('modalTC').classList.remove('open'); }
 </script>
 </body>
 </html>
